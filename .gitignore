@@ -1,0 +1,4 @@
+db/
+public/reports/
+application/logs
+application/libraries/
