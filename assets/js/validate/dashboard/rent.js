@@ -42,7 +42,7 @@ $(function () {
       
         $.ajax({
           type: "POST", 
-          url: base_url + "control/save_catalogo", 
+          url: base_url + "dashboard/save_rent",
           data: $("#form").serialize(),
           dataType: "json",
           contentType: "application/x-www-form-urlencoded;charset=UTF-8",
@@ -63,8 +63,7 @@ $(function () {
             {                                                         
               $("#div_load").css("display", "none");
               $('#btnSubmit').removeAttr('disabled');
-
-              var url = base_url + "control/catalogo";
+              var url = base_url + "dashboard/super_admin";
               $(location).attr("href", url);
             }
             else

@@ -4,7 +4,7 @@ $(function(){
 			var oID = $(this).attr("id");
             $.ajax ({
                 type: 'POST',
-				url: base_url + 'dashboard/cargarModalRent',
+								url: base_url + 'dashboard/cargarModalRent',
                 data: {'idRent': oID},
                 cache: false,
                 success: function (data) {
@@ -61,49 +61,39 @@ $(function(){
 								</div>';
 						}else{
 					?>
-						<table id="catalogo" class="table table-head-fixed table-striped table-hover">
+						<table id="rentas" class="table table-head-fixed table-striped table-hover">
 							<thead>
 								<tr>
 								<th class="text-center">#</th>
-								<th>Nombre</th>
-								<th class="text-center">Sigla</th>
-								<th>Responsable</th>
-								<th>Enlace Aplicación</th>
-								<th class="text-center">Enlaces</th>
+								<th>Client</th>
+								<th>Equipment</th>
+								<th>Start Date</th>
+								<th>Finish Date</th>
+								<th>Status</th>
+								<th>Edit</th>
 								</tr>
 							</thead>
 							<tbody>							
 							<?php
 							$i=0;
-							foreach ($infoCatalogo as $lista):
+							foreach ($info as $lista):
 									$i++;
 									echo "<tr>";
 									echo "<td class='text-center'>" . $i . "</td>";
-									echo "<td>" . $lista['nombre_sistema'] . "</td>";
-									echo "<td class='text-center'>" . $lista['sigla_sistema'] . "</td>";
-									echo "<td>";
-									echo "<b>Responsable técnico:</b><br>" . $lista['tecnico'];
-									echo "<br><b>Responsable funcional:</b><br>" . $lista['funcional'];
-									echo "</td>";
-									echo "<td>";
-									echo $lista['url_aplicacion'];
-									echo "<br><b>IP aplicación:</b> " . $lista['servidor_aplicacion'];
-									echo "<br><b>IP BD:</b> " . $lista['servidor_base_datos'];
-									if($lista['observaciones']){
-										echo "<p class='text-danger'><b> " . $lista['observaciones'] . '</b></p>';
-									}
+									echo "<td>" . $lista['company_name'] . "</td>";
+									echo "<td>" . $lista['unit_number'] . "--->" . $lista['description'] . "</td>";
+									echo "<td>" . $lista['start_date'] . "</td>";
+									echo "<td>" . $lista['finish_date'] . "</td>";
+									echo "<td>" . $lista['rent_status'] . "</td>";
 									echo "</td>";									
 									echo "<td class='text-center'>";
-						?>
-			                      <div class="btn-group-vertical">
-									<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal" id="<?php echo $lista['id_catalogo_sistema']; ?>" >
+									?>
+			            <div class="btn-group-vertical">
+									<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal" id="<?php echo $lista['id_rent']; ?>">
 										Editar
 									</button>
-
-									<a href="<?php echo base_url('/control/detalles/' . $lista['id_catalogo_sistema']); ?>" class="btn btn-danger btn-xs"> Detalles </a>
-			                      </div>
-                        <?php
-                            		echo "</td>";
+                  <?php
+                  echo "</td>";
 									echo "</tr>";
 							endforeach;
 							?>
@@ -119,7 +109,7 @@ $(function(){
 
 <!--INICIO Modal -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">    
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content" id="tablaDatos">
 
 		</div>

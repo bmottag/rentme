@@ -266,6 +266,7 @@ class General_model extends CI_Model {
 	 */
 	public function get_rents($arrData) 
 	{	
+		//pr($arrData);exit;
 		$this->db->select();
 		$this->db->join('param_vehicle V', 'V.id_vehicle = R.fk_id_equipment', 'INNER');
 		$this->db->join('param_company C', 'C.id_company = R.fk_id_client', 'INNER');
@@ -315,11 +316,5 @@ class General_model extends CI_Model {
 			$this->db->close();
 			return $trucks;
 	}
-
-
-
-
-
-
 
 }
