@@ -7,16 +7,28 @@ $(function () {
 
   $("#invoiceNumber").bloquearTexto().maxlength(12);
 
+  $("#damage").change(function () {
+    if (this.value == 1) {
+      $("#oculto").css({display: "block"});
+    } else {
+      $("#oculto").css({display: "none"});
+    }
+  });
+
   $('#form').validate({
     rules: {
-      id_client:                     { required: true, maxlength:70 },
-      sigla:                      { required: true, maxlength:10 },
-      sistema_operativo:          { required: true },
-      lenguaje_programacion:      { required: true },
-      descripcion:                { required: true },
-      responsable_tecnico:        { required: true },
-      responsable_funcional:      { required: true }
-
+      id_client:           { required: true },
+      type:                { required: true },
+      truck:               { required: true },
+      start_date:          { required: true },
+      finish_date:         { required: true },
+      fuel:                { required: true },
+      clean:               { required: true },
+      damage:              { required: true },
+      //damage_observation:  { required: true },
+      type_contract:       { required: true },
+      current_hours:       { required: true },
+      observations:        { required: true }
     },
     errorElement: 'span',
     errorPlacement: function (error, element) {

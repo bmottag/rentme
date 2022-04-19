@@ -17,6 +17,7 @@ class Dashboard extends CI_Controller {
 			$arrParam["limit"] = 30;//Limite de registros para la consulta
 			$data['info'] = $this->general_model->get_rents($arrParam);//search the last 5 records
 			$data['pageHeaderTitle'] = "Dashboard";
+			//pr($data['info']);exit;
 
 			$data["view"] = "dashboard";
 			$this->load->view("layout", $data);
@@ -32,16 +33,15 @@ class Dashboard extends CI_Controller {
 			
 			$data['information'] = FALSE;
 			$data['trucks']  = FALSE;
-			$data["idRent"] = $this->input->post("idRent");
+			$idRent = $this->input->post("idRent");
 
-			if ($data["idRent"] != 'x') {
+			if ($idRent != 'x') {
 				$arrParam = array(
-					"idRent" => $data["idRent"]
+					"idRent" => $idRent
 				);
 				$data['information'] = $this->general_model->get_rents($arrParam);
 				$company = 1;
 				$type = $data['information'][0]["type_level_2"];
-
 				$data['trucks'] = $this->dashboard_model->get_trucks_by_id2($company, $type);
 			}
 
@@ -61,38 +61,34 @@ class Dashboard extends CI_Controller {
 				"id" => 1
 			);
 			$data['equipmentType'] = $this->general_model->get_basic_search($arrParam);
-
+			$data['contractType'] = $this->dashboard_model->get_type_contract();
+			
 			$this->load->view("rent_modal", $data);
     }
 
 	/**
-	 * Guardar datos Catalogo
+	 * Save Rent
      * @since 15/11/2021
      * @author BMOTTAG
 	 */
 	public function save_rent()
 	{			
-			header('Content-Type: application/json');
-			$data = array();
-		
-			$idRent = $this->input->post('hddId');
-			
-			$msj = "Se adicionó con exito el nuevo registro!";
-			if ($idRent != '') {
-				$msj = "Se actualizó con exito el registro!";
-			}
-
-			if ($idRent = $this->dashboard_model->saveRent()) {
-				$data["result"] = true;		
-				$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
-			} else {
-				$data["result"] = "error";
-				$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
-			}
-
-			echo json_encode($data);
+		header('Content-Type: application/json');
+		$data = array();
+		$idRent = $this->input->post('hddId');
+		$msj = "Se adicionó con exito el nuevo registro!";
+		if ($idRent != 'x') {
+			$msj = "Se actualizó con exito el registro!";
+		}
+		if ($idRent = $this->dashboard_model->saveRent()) {
+			$data["result"] = true;		
+			$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
+		} else {
+			$data["result"] = "error";
+			$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
+		}
+		echo json_encode($data);
     }
-
 
 	/**
 	 * Trucks list by company and type
@@ -143,4 +139,49 @@ class Dashboard extends CI_Controller {
 		}
     }
 	
+	/**
+	 * Form rent details
+     * @since 19/04/2022
+     * @author BMOTTAG
+	 */
+	public function rent_details($id = 'x')
+	{
+		$arrParam["idRent"] = $id;
+		$data['pageHeaderTitle'] = "Details";
+		$data['info'] = $this->general_model->get_rents($arrParam);
+		$data['status'] = $this->dashboard_model->get_status();
+		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
+		//pr($data['rentStatus']);exit;
+
+		$data["view"] = 'form_details';
+		$this->load->view("layout", $data);
+	}
+
+	/**
+	 * Save rent status
+     * @since 15/11/2021
+     * @author BMOTTAG
+	 */
+	public function save_rent_status($id)
+	{			
+		header('Content-Type: application/json');
+		$data = array();
+		$idRent = $id;
+		$arrParam = array(
+			'fk_id_rent' => $idRent,
+			'fk_id_user' => $this->session->userdata("idUser"),
+			'date_issue' => date("Y-m-d H:i:s"),
+			'observation' => $this->input->post('information'),
+			'fk_id_status' => $this->input->post('status')
+		);
+		$msj = "Se actualizó con exito el registro!";
+		if ($this->dashboard_model->saveRentStatus($arrParam)) {
+			$data["result"] = true;		
+			$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
+		} else {
+			$data["result"] = "error";
+			$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
+		}
+		echo json_encode($data);
+    }
 }

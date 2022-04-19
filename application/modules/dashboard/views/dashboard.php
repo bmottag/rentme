@@ -84,14 +84,17 @@ $(function(){
 									echo "<td>" . $lista['unit_number'] . "--->" . $lista['description'] . "</td>";
 									echo "<td>" . $lista['start_date'] . "</td>";
 									echo "<td>" . $lista['finish_date'] . "</td>";
-									echo "<td>" . $lista['rent_status'] . "</td>";
+									echo "<td class='text-" . $lista['clase'] . "'><strong>" . $lista['name_status'] . "</strong>";
+									echo '<p class="text-info">Last message:<br>' . $lista['last_message'] . '</p>';
+									echo "</td>";
 									echo "</td>";									
 									echo "<td class='text-center'>";
 									?>
-			            <div class="btn-group-vertical">
+			            <div class="btn-group-horizontal">
 									<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal" id="<?php echo $lista['id_rent']; ?>">
 										Editar
 									</button>
+									<a href="<?php echo base_url("dashboard/rent_details/" . $lista['id_rent']); ?>" class="btn btn-info btn-xs">Details <span class="glyphicon glyphicon-edit" aria-hidden="true"></a>
                   <?php
                   echo "</td>";
 									echo "</tr>";

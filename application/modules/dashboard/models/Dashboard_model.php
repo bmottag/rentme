@@ -54,12 +54,83 @@ class Dashboard_model extends CI_Model {
 	}
 
 	/**
-	 * Add/Edit ENLACE
+	 * List type of contract
+	 * @since 12/04/2022
+	 */
+	public function get_type_contract()
+	{
+		$contracts = array();
+		$sql = "SELECT id_type_contract, name_type_contract
+			FROM rme_param_type_contract
+			ORDER BY id_type_contract";
+		
+		$query = $this->db->query($sql);
+		if ($query->num_rows() > 0) {
+			$i = 0;
+			foreach ($query->result() as $row) {
+				$contracts[$i]["id_type_contract"] = $row->id_type_contract;
+				$contracts[$i]["name_type_contract"] = $row->name_type_contract;
+				$i++;
+			}
+		}
+		$this->db->close();
+		return $contracts;
+	}
+
+	/**
+	 * List of status
+	 * @since 18/04/2022
+	 */
+	public function get_status() 
+	{		
+		$this->db->order_by('id_status', 'asc');
+		$query = $this->db->get('rme_param_status');
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Lista de quipos rentado
+	 * @since 28/2/2022
+	 */
+	public function get_rent_status($arrData) 
+	{
+		$this->db->select();
+		$this->db->join('rme_rent R', 'R.id_rent = RS.fk_id_rent', 'INNER');
+		$this->db->join('user U', 'RS.fk_id_user = U.id_user', 'INNER');
+		$this->db->join('rme_param_status S', 'S.id_status = RS.fk_id_status', 'INNER');
+
+		if (array_key_exists("idRent", $arrData)) {
+			$this->db->where('fk_id_rent', $arrData["idRent"]);
+		}
+				
+		$this->db->order_by('id_rent_status', 'desc');
+		$query = $this->db->get('rme_rent_status RS');
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save rent
 	 * @since 2/4/2018
 	 */
 	public function saveRent() 
 	{
 		$idRent = $this->input->post('hddId');
+		$damage = $this->input->post('damage');
+		$damage_observation = $this->input->post('damage_observation');
+
+		if ($damage == 2) {
+			$damage_observation = '';
+		}
 		
 		$data = array(
 			'fk_id_client' => $this->input->post('id_client'),
@@ -69,15 +140,26 @@ class Dashboard_model extends CI_Model {
 			'fuel' => $this->input->post('fuel'),
 			'clean' => $this->input->post('clean'),
 			'damage' => $this->input->post('damage'),
-			'type_contract' => $this->input->post('type_contract'),
-			'maintenance' => $this->input->post('maintenance'),
-			'observations' => $this->input->post('observations'),
-			'rent_status' => 1,
+			'damage_observation' => $damage_observation,
+			'fk_id_type_contract' => $this->input->post('type_contract'),
+			'current_hours' => $this->input->post('current_hours'),
+			'observations' => $this->input->post('observations')
 		);
 		
 		//revisar si es para adicionar o editar
-		if ($idRent == '') {
-			$query = $this->db->insert('rme_rent', $data);			
+		if ($idRent == 'x') {
+			$data['fk_id_status'] = 1;
+			$data['last_message'] = $this->input->post('last_message');
+			$query = $this->db->insert('rme_rent', $data);
+			$idRent = $this->db->insert_id();
+			$arrParam = array(
+				'fk_id_rent' => $idRent,
+				'fk_id_user' => $this->session->userdata("idUser"),
+				'date_issue' => date("Y-m-d H:i:s"),
+				'observation' => $data['last_message'],
+				'fk_id_status' => $data['fk_id_status']
+			);
+			$this->saveRentStatus($arrParam);
 		} else {
 			$this->db->where('id_rent', $idRent);
 			$query = $this->db->update('rme_rent', $data);
@@ -89,4 +171,34 @@ class Dashboard_model extends CI_Model {
 		}
 	}
 
+	/**
+	 * Save rent status
+	 * @since 19/04/2022
+	 */
+	public function saveRentStatus($arrParam)
+	{
+		$data = array(
+			'fk_id_rent' => $arrParam['fk_id_rent'],
+			'fk_id_user' => $arrParam['fk_id_user'],
+			'date_issue' => $arrParam['date_issue'],
+			'observation' => $arrParam['observation'],
+			'fk_id_status' => $arrParam['fk_id_status']
+		);
+		$query = $this->db->insert('rme_rent_status', $data);
+		if ($query) {
+			$datos = array(
+				'fk_id_status' => $arrParam['fk_id_status'],
+				'last_message' => $arrParam['observation']
+			);
+			$this->db->where('id_rent', $arrParam['fk_id_rent']);
+			$query2 = $this->db->update('rme_rent', $datos);
+			if ($query2) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }
