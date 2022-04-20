@@ -151,7 +151,6 @@ class Dashboard extends CI_Controller {
 		$data['info'] = $this->general_model->get_rents($arrParam);
 		$data['status'] = $this->dashboard_model->get_status();
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
-		//pr($data['rentStatus']);exit;
 
 		$data["view"] = 'form_details';
 		$this->load->view("layout", $data);
@@ -181,6 +180,30 @@ class Dashboard extends CI_Controller {
 		} else {
 			$data["result"] = "error";
 			$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
+		}
+		echo json_encode($data);
+    }
+
+    /**
+	 * Alert maintenance
+     * @since 19/04/2022
+     * @author BMOTTAG
+	 */
+	public function alert_maintenance()
+	{
+		header('Content-Type: application/json');
+		$data = array();
+		$nextChange = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
+		$hoursContract = $this->dashboard_model->get_hours_contract($this->input->post('type_contract'));
+		$currentHours = $this->input->post('current_hours');
+
+		if ($currentHours + $hoursContract['hours_type_contract'] >= $nextChange['oil_change']) {
+			$data["result"] = true;
+			$data["bandera"] = true;
+			$data["msj"] = "The next maintenance will be at <b>" . $nextChange['oil_change'] . " hours/km.</b> It's expired or about to expire.";
+		} else {
+			$data["result"] = true;
+			$data["bandera"] = false;
 		}
 		echo json_encode($data);
     }

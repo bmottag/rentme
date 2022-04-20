@@ -119,6 +119,36 @@ class Dashboard_model extends CI_Model {
 	}
 
 	/**
+	 * Truck by id
+	 * @since 19/04/2022
+	 */
+	public function get_truck_by_id($id)
+	{
+		$sql = "SELECT oil_change FROM param_vehicle WHERE id_vehicle = $id";
+		$query = $this->db->query($sql);
+		if ($query->num_rows() > 0) {
+			return $query->row_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Hours type of contract
+	 * @since 19/04/2022
+	 */
+	public function get_hours_contract($id)
+	{
+		$sql = "SELECT hours_type_contract FROM rme_param_type_contract WHERE id_type_contract = $id";
+		$query = $this->db->query($sql);
+		if ($query->num_rows() > 0) {
+			return $query->row_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Save rent
 	 * @since 2/4/2018
 	 */
