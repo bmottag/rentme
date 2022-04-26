@@ -14,15 +14,15 @@ $(function () {
     });
 
     $("#truck").change(function () {
-        getMaintenance()
+        getMaintenance();
     });
 
     $("#type_contract").change(function () {
-        getMaintenance()
+        getMaintenance();
     });
 
     $("#current_hours").change(function () {
-        getMaintenance()
+        getMaintenance();
     });
 
     $('#form').validate({
@@ -118,25 +118,28 @@ function getMaintenance(){
                     if (data.bandera)
                     {
                         $("#div_load").css("display", "none");
-                        $("#div_error").css("display", "inline");
-                        $("#span_msj").html(data.msj);
+                        $("#div_error2").css("display", "inline");
+                        $("#span_msj2").html(data.msj2);
                     } else {
                         $("#div_load").css("display", "none");
-                        $("#div_error").css("display", "none");
+                        $("#div_error2").css("display", "none");
                     }
                 }
                 else
                 {
                     alert('Error. Reload the web page.');
                     $("#div_load").css("display", "none");
-                    $("#div_error").css("display", "inline");
+                    $("#div_error2").css("display", "inline");
                 } 
             },
             error: function(result) {
                 alert('Error. Reload the web page.');
                 $("#div_load").css("display", "none");
-                $("#div_error").css("display", "inline");
+                $("#div_error2").css("display", "inline");
             }
         });
+    } else {
+        $("#div_load").css("display", "none");
+        $("#div_error2").css("display", "none");
     }
 }

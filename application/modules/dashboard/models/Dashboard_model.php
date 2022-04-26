@@ -124,7 +124,22 @@ class Dashboard_model extends CI_Model {
 	 */
 	public function get_truck_by_id($id)
 	{
-		$sql = "SELECT oil_change FROM param_vehicle WHERE id_vehicle = $id";
+		$sql = "SELECT oil_change, rent_status FROM param_vehicle WHERE id_vehicle = $id";
+		$query = $this->db->query($sql);
+		if ($query->num_rows() > 0) {
+			return $query->row_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Max rent by id
+	 * @since 25/04/2022
+	 */
+	public function get_rent_by_truck($id)
+	{
+		$sql = "SELECT MAX(finish_date) AS finish_date FROM rme_rent WHERE fk_id_equipment = $id";
 		$query = $this->db->query($sql);
 		if ($query->num_rows() > 0) {
 			return $query->row_array();
@@ -190,6 +205,7 @@ class Dashboard_model extends CI_Model {
 				'fk_id_status' => $data['fk_id_status']
 			);
 			$this->saveRentStatus($arrParam);
+			$this->updateVehicle($this->input->post('truck'));
 		} else {
 			$this->db->where('id_rent', $idRent);
 			$query = $this->db->update('rme_rent', $data);
@@ -227,6 +243,24 @@ class Dashboard_model extends CI_Model {
 			} else {
 				return false;
 			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Update rent status vehicle
+	 * @since 22/04/2022
+	 */
+	public function updateVehicle($id)
+	{
+		$data = array(
+			'rent_status' => 1
+		);
+		$this->db->where('id_vehicle', $id);
+		$query = $this->db->update('param_vehicle', $data);
+		if ($query) {
+			return true;
 		} else {
 			return false;
 		}

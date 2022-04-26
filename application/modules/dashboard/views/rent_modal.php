@@ -1,5 +1,5 @@
-<script type="text/javascript" src="<?php echo base_url("assets/js/validate/dashboard/rent.js"); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url("assets/js/validate/dashboard/ajaxTrucks.js"); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url("assets/js/validate/dashboard/rent.js"); ?>"></script>
 
 <div class="modal-header">
 	<h4 class="modal-title">Rent Form</h4>
@@ -163,16 +163,20 @@
 					</div>
 				</div>
 			</div>
-			<div id="div_error" style="display:none">			
+			<div id="div_error" style="display:none">
 				<div class="alert alert-danger alert-dismissible">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 					<div id="span_msj"></div>
 				</div>
-			</div>	
+			</div>
+			<div id="div_error2" style="display:none">
+				<div class="alert alert-danger alert-dismissible">
+					<div id="span_msj2"></div>
+				</div>
+			</div>
 		</div>
-			
 	</form>
 </div>
+
 <div class="modal-footer justify-content-between">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	<button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-primary" >

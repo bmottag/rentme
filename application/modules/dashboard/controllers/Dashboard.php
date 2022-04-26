@@ -200,7 +200,30 @@ class Dashboard extends CI_Controller {
 		if ($currentHours + $hoursContract['hours_type_contract'] >= $nextChange['oil_change']) {
 			$data["result"] = true;
 			$data["bandera"] = true;
-			$data["msj"] = "The next maintenance will be at <b>" . $nextChange['oil_change'] . " hours/km.</b> It's expired or about to expire.";
+			$data["msj2"] = "The next maintenance will be at <b>" . $nextChange['oil_change'] . " hours/km</b>. It's expired or about to expire.";
+		} else {
+			$data["result"] = true;
+			$data["bandera"] = false;
+		}
+		echo json_encode($data);
+    }
+
+    /**
+	 * Alert rent vehicle
+     * @since 25/04/2022
+     * @author BMOTTAG
+	 */
+	public function alert_rentVehicle()
+	{
+		header('Content-Type: application/json');
+		$data = array();
+		$rentVehicle = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
+
+		if ($rentVehicle['rent_status'] == 1) {
+			$fecha = $this->dashboard_model->get_rent_by_truck($this->input->post('truck'));
+			$data["result"] = true;
+			$data["bandera"] = true;
+			$data["msj"] = "This equipment has a scheduled rental date. This equipment is available after <b>" . $fecha['finish_date'] . "</b>.";
 		} else {
 			$data["result"] = true;
 			$data["bandera"] = false;
