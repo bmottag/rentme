@@ -46,9 +46,9 @@ class Dashboard extends CI_Controller {
 			}
 
 			$arrParam = array(
-				"table" => "param_company",
-				"order" => "company_name",
-				"column" => "company_type",
+				"table" => "rme_param_client",
+				"order" => "param_client_name",
+				"column" => "param_client_type",
 				"id" => 2
 			);
 			$data['clientList'] = $this->general_model->get_basic_search($arrParam);

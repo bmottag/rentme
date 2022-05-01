@@ -41,7 +41,7 @@
 				          	<div class="row invoice-info">
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
-					                <strong>Client: </strong><?php echo $info[0]['company_name']; ?><br>
+					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
 					                <strong>Beginning date: </strong><?php echo $info[0]['start_date']; ?><br>
 					                <strong>It's clean ?: </strong><?php echo $info[0]['clean']==1?"Si":"No"; ?><br>
 					                <strong>Type of contract: </strong><?php echo $info[0]['name_type_contract']; ?><br>

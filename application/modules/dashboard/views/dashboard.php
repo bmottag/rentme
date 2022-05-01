@@ -80,7 +80,7 @@ $(function(){
 									$i++;
 									echo "<tr>";
 									echo "<td class='text-center'>" . $i . "</td>";
-									echo "<td>" . $lista['company_name'] . "</td>";
+									echo "<td>" . $lista['param_client_name'] . "</td>";
 									echo "<td>" . $lista['unit_number'] . "--->" . $lista['description'] . "</td>";
 									echo "<td>" . $lista['start_date'] . "</td>";
 									echo "<td>" . $lista['finish_date'] . "</td>";

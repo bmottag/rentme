@@ -20,7 +20,7 @@
 					<select name="id_client" id="id_client" class="form-control">
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($clientList); $i++) { ?>
-							<option value="<?php echo $clientList[$i]["id_company"]; ?>" <?php if($information && $clientList[$i]["id_company"] == $information[0]['fk_id_client']) { echo "selected"; } ?>><?php echo $clientList[$i]["company_name"]; ?></option>	
+							<option value="<?php echo $clientList[$i]["id_param_client"]; ?>" <?php if($information && $clientList[$i]["id_param_client"] == $information[0]['fk_id_client']) { echo "selected"; } ?>><?php echo $clientList[$i]["param_client_name"]; ?></option>	
 						<?php } ?>
 					</select>
 				</div>
