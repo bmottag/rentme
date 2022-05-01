@@ -42,17 +42,17 @@
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
-					                <strong>Beginning date: </strong><?php echo $info[0]['start_date']; ?><br>
 					                <strong>It's clean ?: </strong><?php echo $info[0]['clean']==1?"Si":"No"; ?><br>
-					                <strong>Type of contract: </strong><?php echo $info[0]['name_type_contract']; ?><br>
+					                <strong>Type of contract: </strong><?php echo $info[0]['name_type_contract']; ?>
+					                <p class="text-primary"><strong>Beginning date: </strong><?php echo $info[0]['start_date']; ?></p>
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Type: </strong><?php echo $info[0]['type_2']; ?><br>
-					                <strong>Finish_date: </strong><?php echo $info[0]['finish_date']; ?><br>
 					                <strong>Does it have any damage ?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
 					                <strong>Current hours: </strong><?php echo $info[0]['current_hours']; ?><br>
+					                <p class="text-primary"><strong>Finish Date: </strong><?php echo $info[0]['finish_date']; ?></p>
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
@@ -69,87 +69,76 @@
 						</div>
 						<!--INICIO ADDITIONAL INFORMATION -->
 						<div class="row">
-							<div class="col-lg-6">
-								<div class="panel panel-primary">
-									<div class="alert alert-info">
-										ADDITIONAL INFORMATION <br>
-										This field is only additional information for the office.
+							<div class="col-md-4">
+								<div class="card card-info">
+									<div class="card-header">
+										<h3 class="card-title">Additional Information</h3>
 									</div>
-									<div class="panel-body">
-										<div class="col-lg-12">
-											<form name="formState" id="formState" class="form-horizontal" method="post">
-												<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
-												<div class="form-group">
-													<label class="col-sm-4 control-label" for="state">Status :</label>
-													<div class="col-sm-8">
-														<select name="status" id="status" class="form-control">
-															<option value="">Select...</option>
-															<?php for ($i = 0; $i < count($status); $i++) { ?>
-																<option value="<?php echo $status[$i]["id_status"]; ?>"><?php echo $status[$i]["name_status"]; ?></option>	
-															<?php } ?>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-4 control-label" for="information">Additional information :</label>
-													<div class="col-sm-8">
-													<textarea id="information" name="information" class="form-control" rows="3" placeholder="Additional information"></textarea>
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="row" align="center">
-														<div style="width:100%;" align="center">
-															<button type="button" id="btnState" name="btnState" class="btn btn-primary" >
-																Save <span class="fa fa-save" aria-hidden="true" />
-															</button> 
-															
-														</div>
-													</div>
-												</div>
-											</form>
-											<div class="alert alert-danger ">
-												<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
-												Be sure you fild all the information.
+									<form name="formState" id="formState" class="form-horizontal" method="post">
+										<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
+										<div class="card-body">
+											<div class="form-group">
+												<label for="status">Status: </label>
+												<select name="status" id="status" class="form-control">
+													<option value="">Select...</option>
+													<?php for ($i = 0; $i < count($status); $i++) { ?>
+														<option value="<?php echo $status[$i]["id_status"]; ?>"><?php echo $status[$i]["name_status"]; ?></option>	
+													<?php } ?>
+												</select>
+											</div>
+											<div class="form-group">
+												<textarea id="information" name="information" class="form-control" rows="3" placeholder="Additional information"></textarea>
 											</div>
 										</div>
-									</div>
+										<div class="card-footer">
+											<button type="button" id="btnState" name="btnState" class="btn btn-primary" >
+												Save <span class="fa fa-save" aria-hidden="true" />
+											</button> 
+										</div>
+									</form>
 								</div>
 							</div>
-							<div class="col-lg-6">	
-								<div class="chat-panel panel panel-primary">
-									<div class="alert alert-info">
-										<i class="fa fa-comments fa-fw"></i> Status history
+
+							<div class="col-md-8">
+								<div class="card card-info">
+									<div class="card-header">
+										<h3 class="card-title"><i class="fa fa-comments fa-fw"></i> Status History</h3>
 									</div>
-									<div class="panel-body">
-										<ul class="chat">
+									<div class="card-body">
+										<table class="table">
+											<tbody>
 										<?php 
 											if($rentStatus)
 											{
 												foreach ($rentStatus as $data):
-										?>
-											<li class="right clearfix">
-												<span class="chat-img pull-right">
-													<small class="pull-right text-muted">
+											?>
+
+												<tr>
+													<td class="pull-right text-muted small" style="width: 20%">
 														<i class="fa fa-clock-o fa-fw"></i> <?php echo $data['date_issue']; ?>
-													</small>
-												</span>
-												<div class="chat-body clearfix">
-													<div class="header">
-														<span class="fa fa-user" aria-hidden="true"></span>
-														<strong class="primary-font"><?php echo $data['first_name']; ?></strong>
-													</div>
-													<?php echo $data['observation']; ?>
-													<?php echo '<p class="text-' . $data['clase'] . '"><strong><i class="fa ' . $data['icono'] . ' fa-fw"></i>' . $data['name_status'] . '</strong></p>'; ?>
-												</div>
-											</li>
+													</td>
+													<td class="small" style="width: 15%">
+														<b><?php echo $data['first_name']; ?></b>
+													</td>
+													<td class="small" style="width: 50%">
+														<?php echo $data['observation']; ?>
+													</td>
+													<td style="width: 15%">
+														<small class="badge badge-<?php echo $data['clase']; ?>">
+															<i class="fa <?php echo $data['icono']; ?>"></i>
+															<?php echo $data['name_status']; ?>
+														</small>
+													</td>
+												</tr>
 										<?php
 												endforeach;
 											}
 										?>
-										</ul>
+											</tbody>
+										</table>
 									</div>
 								</div>
-							</div>	
+							</div>
 						</div>
 						<!--FIN ADDITIONAL INFORMATION -->
 					</div>
