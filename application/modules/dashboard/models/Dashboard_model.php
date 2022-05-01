@@ -205,6 +205,7 @@ class Dashboard_model extends CI_Model {
 				'fk_id_status' => $data['fk_id_status']
 			);
 			$this->saveRentStatus($arrParam);
+			$this->saveWORent($arrParam);
 			$this->updateVehicle($this->input->post('truck'));
 		} else {
 			$this->db->where('id_rent', $idRent);
@@ -243,6 +244,37 @@ class Dashboard_model extends CI_Model {
 			} else {
 				return false;
 			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save WO rent
+	 * @since 1/04/2022
+	 */
+	public function saveWORent($arrParam)
+	{
+		$data = array(
+			'fk_id_user' => $arrParam['fk_id_user'],
+			'fk_id_rent' => $arrParam['fk_id_rent'],
+			'date_issue' => $arrParam['date_issue'],
+			'date' => date("Y-m-d"),
+			'observation' => $arrParam['observation'],
+			'status' => 0,
+			'last_message' => $arrParam['observation']
+		);
+		$query = $this->db->insert('rme_workorder', $data);
+		$idWO = $this->db->insert_id();
+		if ($query) {
+			$datos = array(
+				'fk_id_workorder' => $idWO,
+				'fk_id_user' => $arrParam['fk_id_user'],
+				'date_issue' => $arrParam['date_issue'],
+				'observation' => $arrParam['observation'],
+				'status' => 0								
+			);
+			$this->db->insert('rme_workorder_status', $datos);
 		} else {
 			return false;
 		}

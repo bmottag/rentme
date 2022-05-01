@@ -342,4 +342,52 @@ class General_model extends CI_Model {
 		}
 	}
 
+	/**
+	 * Workorders´s list
+	 * las 10 records
+	 * @since 12/1/2017
+	 */
+	public function get_workordes_by_idUser($arrDatos) 
+	{							
+			$this->db->select('W.*, C.param_client_name, C.param_client_address, C.param_client_contact, C.param_client_movil, C.param_client_email, CONCAT(U.first_name, " ", U.last_name) name');
+			$this->db->join('rme_rent R', 'R.id_rent = W.fk_id_rent', 'INNER');
+			$this->db->join('user U', 'U.id_user = W.fk_id_user', 'INNER');
+			$this->db->join('rme_param_client C', 'C.id_param_client = R.fk_id_client', 'INNER');
+
+			if (array_key_exists("idWorkOrder", $arrDatos)) {
+				$this->db->where('id_workorder', $arrDatos["idWorkOrder"]);
+			}
+			if (array_key_exists("idEmployee", $arrDatos)) {
+				$this->db->where('fk_id_user', $arrDatos["idEmployee"]);
+			}
+			$this->db->order_by('id_workorder', 'desc');
+			$query = $this->db->get('rme_workorder W', 50);
+
+			if ($query->num_rows() > 0) {
+				return $query->result_array();
+			} else {
+				return false;
+			}
+	}
+
+	/**
+	 * WO details
+	 * @since 1/6/2022
+	 */
+	public function get_wo_details($arrData) 
+	{			
+			$this->db->select();
+			if (array_key_exists("idWorkOrder", $arrData)) {
+				$this->db->where('D.id_wo_detail', $arrData["idWorkOrder"]);
+			}
+			$this->db->order_by("id_wo_detail", "asc");
+			$query = $this->db->get("rme_workorder_details D");
+
+			if ($query->num_rows() >= 1) {
+				return $query->result_array();
+			}else{
+				return false;
+			}
+	}
+
 }
