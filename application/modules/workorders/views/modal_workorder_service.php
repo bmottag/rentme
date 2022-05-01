@@ -25,14 +25,14 @@
 			<div class="col-sm-6">
 				<div class="form-group text-left">
 					<label class="control-label" for="quantity">Quantity: *</label>
-					<input type="number" max="10" min="1" id="quantity" name="quantity" class="form-control" placeholder="Quantity" >
+					<input type="number" max="100" min="1" id="quantity" name="quantity" class="form-control" placeholder="Quantity" >
 				</div>
 			</div>
 			
 			<div class="col-sm-6">
 				<div class="form-group text-left">
 					<label class="control-label" for="rate">Rate: *</label>
-					<input type="number" max="1000" min="1" id="rate" name="rate" class="form-control" placeholder="Rate" >
+					<input type="number" max="100000" min="1" id="rate" name="rate" class="form-control" placeholder="Rate" >
 				</div>
 			</div>
 		</div>
