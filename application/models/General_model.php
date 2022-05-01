@@ -319,4 +319,27 @@ class General_model extends CI_Model {
 			return $trucks;
 	}
 
+	/**
+	 * Client list
+	 * @since 12/6/2020
+	 */
+	public function get_param_clients($arrData) 
+	{			
+		$this->db->select();
+		if (array_key_exists("status", $arrData)) {
+			$this->db->where('C.param_client_status', $arrData["status"]);
+		}
+		if (array_key_exists("idParamClient", $arrData)) {
+			$this->db->where('C.id_param_client', $arrData["idParamClient"]);
+		}
+		$this->db->order_by("param_client_name", "ASC");
+		$query = $this->db->get("rme_param_client C");
+
+		if ($query->num_rows() >= 1) {
+			return $query->result_array();
+		}else{
+			return false;
+		}
+	}
+
 }

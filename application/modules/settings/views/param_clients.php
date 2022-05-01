@@ -50,21 +50,15 @@ $(function(){
 							<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal" id="x">
 									<span class="fa fa-plus" aria-hidden="true"></span> Add Client
 							</button>
-			                <a type="button" class="btn btn-danger swalDefaultInfo <?php if($status == 1){ echo 'active';} ?>" href="<?php echo base_url("settings/param_clients/1"); ?>">
-			                  Active Client
-			                </a>
-			                <a type="button" class="btn btn-danger swalDefaultInfo <?php if($status == 2){ echo 'active';} ?>" href="<?php echo base_url("settings/param_clients/2"); ?>">
-			                  Inactive Client
-			                </a>
 						</div>
 						<div class="card-tools">
-							<div class="input-group input-group-sm" style="width: 150px;">
-								<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-								<div class="input-group-append">
-									<button type="submit" class="btn btn-default">
-										<i class="fas fa-search"></i>
-									</button>
-								</div>
+							<div class="btn-group btn-group-toggle">
+	                <a type="button" class="btn btn-danger swalDefaultInfo <?php if($status == 1){ echo 'active';} ?>" href="<?php echo base_url("settings/clients/1"); ?>">
+	                  Active Client
+	                </a>
+	                <a type="button" class="btn btn-danger swalDefaultInfo <?php if($status == 2){ echo 'active';} ?>" href="<?php echo base_url("settings/clients/2"); ?>">
+	                  Inactive Client
+	                </a>
 							</div>
 						</div>
 					</div>
@@ -77,7 +71,7 @@ $(function(){
 								</div>';
 						}else{
 					?>
-						<table class="table table-hover text-nowrap">
+						<table id="information" class="table table-hover text-nowrap">
 							<thead>
 								<tr>
 								<th>Name</th>
@@ -159,12 +153,15 @@ if($count == 10){
 <!--FIN Modal -->
 
 <script>
-  $(function() {
-    var Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 7000
+  $(function () {
+    $('#information').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      "responsive": true,
     });
   });
 </script>

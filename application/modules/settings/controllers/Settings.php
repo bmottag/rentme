@@ -330,7 +330,7 @@ class Settings extends CI_Controller {
      * @since 4/7/2021
      * @author BMOTTAG
 	 */
-	public function param_clients($status=1)
+	public function clients($status=1)
 	{			
 			$data['status'] = $status;
 			

@@ -192,14 +192,14 @@
 
 				//revisar si es para adicionar o editar
 				if ($idClient == '') {
-					$data['fk_id_app_company'] = $this->session->userdata("idCompany");
+					$data['param_client_type'] = 2;
 					$data['param_client_status'] = 1;
 					$data['date_issue'] = date("Y-m-d");
-					$query = $this->db->insert('param_client', $data);
+					$query = $this->db->insert('rme_param_client', $data);
 				}else{
 					$data['param_client_status'] = $this->input->post('status');
 					$this->db->where('id_param_client', $idClient);
-					$query = $this->db->update('param_client', $data);
+					$query = $this->db->update('rme_param_client', $data);
 				}
 				if ($query) {
 					return true;
