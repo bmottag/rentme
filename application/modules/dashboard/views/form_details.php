@@ -42,23 +42,43 @@
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
-					                <strong>It's clean ?: </strong><?php echo $info[0]['clean']==1?"Si":"No"; ?><br>
-					                <strong>Type of contract: </strong><?php echo $info[0]['name_type_contract']; ?>
-					                <p class="text-primary"><strong>Beginning date: </strong><?php echo $info[0]['start_date']; ?></p>
+					                <strong>Current equipment condition: </strong><?php echo $info[0]['clean']==1?"Clean":"To be clean"; ?><br>
+					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
+					                <p class="text-primary"><strong>From: </strong><?php echo $info[0]['start_date']; ?></p>
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
 					              <address>
-					                <strong>Type: </strong><?php echo $info[0]['type_2']; ?><br>
-					                <strong>Does it have any damage ?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
-					                <strong>Current hours: </strong><?php echo $info[0]['current_hours']; ?><br>
-					                <p class="text-primary"><strong>Finish Date: </strong><?php echo $info[0]['finish_date']; ?></p>
+					                <strong>Type of equipment: </strong><?php echo $info[0]['type_2']; ?><br>
+					                <strong>Does the unit has any damage(s)?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
+					                <strong>Current unit hours: </strong><?php echo $info[0]['current_hours']; ?><br>
+					                <p class="text-primary"><strong>Until: </strong><?php echo $info[0]['finish_date']; ?></p>
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Equipment: </strong><?php echo $info[0]['unit_number'] ?>---><?php echo $info[0]['description'] ?><br>
-					                <strong>Current Fuel: </strong><?php echo $info[0]['fuel']; ?><br>
+					                <strong>Current Fuel: </strong>
+					                <?php 
+									switch ($info[0]['fuel']) {
+										case 1:
+											echo "Empty"; 
+											break;
+										case 2:
+											echo "1/4"; 
+											break;
+										case 3:
+											echo"1/2"; 
+											break;
+										case 4:
+											echo "3/4"; 
+											break;
+										case 5:
+											echo "Full"; 
+											break;
+									}
+					                ?>
+					                <br>
 					                <?php if ($info[0]['damage']==1) { ?>
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>

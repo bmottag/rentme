@@ -28,7 +28,7 @@
 		
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="type">Type: *</label>
+					<label class="control-label" for="type">Type of equipment: *</label>
 					<select name="type" id="type" class="form-control">
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($equipmentType); $i++) { ?>
@@ -57,7 +57,7 @@
 		<div class="row">	
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="start_date">Beginning date: *</label>
+					<label class="control-label" for="start_date">From: *</label>
                     <div class="input-group date" id="start_date" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" id="start_date" name="start_date" data-target="#start_date" value="<?php echo $information?$information[0]["start_date"]:""; ?>" placeholder="Beginning date"/>
                         <div class="input-group-append" data-target="#start_date" data-toggle="datetimepicker">
@@ -69,7 +69,7 @@
 
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="finish_date">Finish date: *</label>
+					<label class="control-label" for="finish_date">Until: *</label>
                     <div class="input-group date" id="finish_date" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" id="finish_date" name="finish_date" data-target="#finish_date" value="<?php echo $information?$information[0]["finish_date"]:""; ?>" placeholder="Finish date"/>
                         <div class="input-group-append" data-target="#finish_date" data-toggle="datetimepicker">
@@ -82,7 +82,14 @@
 			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="fuel">Current Fuel: *</label>
-					<input id="fuel" name="fuel" placeholder="Current Fuel" class="form-control" value="<?php echo $information?$information[0]["fuel"]:""; ?>">
+					<select name="fuel" id="fuel" class="form-control">
+						<option value=''>Select...</option>
+						<option value='1' <?php if($information && $information[0]["fuel"] == 1) { echo "selected"; } ?>>Empty</option>
+						<option value='2' <?php if($information && $information[0]["fuel"] == 2) { echo "selected"; } ?>>1/4</option>
+						<option value='3' <?php if($information && $information[0]["fuel"] == 3) { echo "selected"; } ?>>1/2</option>
+						<option value='4' <?php if($information && $information[0]["fuel"] == 4) { echo "selected"; } ?>>3/4</option>
+						<option value='5' <?php if($information && $information[0]["fuel"] == 5) { echo "selected"; } ?>>Full</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -90,18 +97,18 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group text-left">
-					<label class="control-label" for="clean">It's clean ?: *</label>
+					<label class="control-label" for="clean">Current equipment condition: *</label>
 					<select name="clean" id="clean" class="form-control">
 						<option value=''>Select...</option>
-						<option value='1' <?php if($information && $information[0]["clean"] == 1) { echo "selected"; } ?>>Si</option>
-						<option value='2' <?php if($information && $information[0]["clean"] == 2) { echo "selected"; } ?>>No</option>
+						<option value='1' <?php if($information && $information[0]["clean"] == 1) { echo "selected"; } ?>>Clean</option>
+						<option value='2' <?php if($information && $information[0]["clean"] == 2) { echo "selected"; } ?>>To be clean</option>
 					</select>
 				</div>
 			</div>
 		
 			<div class="col-sm-6">
 				<div class="form-group text-left">
-					<label class="control-label" for="damage">Does it have any damage ?: *</label>
+					<label class="control-label" for="damage">Does the unit has any damage(s)?: *</label>
 					<select name="damage" id="damage" class="form-control">
 						<option value=''>Select...</option>
 						<option value='1' <?php if($information && $information[0]["damage"] == 1) { echo "selected"; } ?>>Si</option>
@@ -128,7 +135,7 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group text-left">
-					<label class="control-label" for="type_contract">Type of contract: *</label>
+					<label class="control-label" for="type_contract">Type of rent : *</label>
 					<select name="type_contract" id="type_contract" class="form-control">
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($contractType); $i++) { ?>
@@ -140,7 +147,7 @@
 
 			<div class="col-sm-6">
 				<div class="form-group text-left">
-					<label class="control-label" for="current_hours">Current hours: *</label>
+					<label class="control-label" for="current_hours">Current unit hours: *</label>
 					<input id="current_hours" name="current_hours" placeholder="Current hours" class="form-control" value="<?php echo $information?$information[0]["current_hours"]:""; ?>">
 				</div>
 			</div>

@@ -73,10 +73,10 @@ $(function(){
             Equipment
               <address>
                 <strong><?php echo $infoRent[0]['unit_number'] . "--->" . $infoRent[0]['description']; ?></strong><br>
-                <b>Type: </b><?php echo $infoRent[0]['type_2']; ?><br>
+                <b>Type of equipment: </b><?php echo $infoRent[0]['type_2']; ?><br>
                 <b>From: </b><?php echo $infoRent[0]['start_date']; ?><br>
-                <b>To: </b><?php echo $infoRent[0]['finish_date']; ?><br>
-                <b>Type of contract: </b><?php echo $infoRent[0]['name_type_contract']; ?>
+                <b>Until: </b><?php echo $infoRent[0]['finish_date']; ?><br>
+                <b>Type of rent: </b><?php echo $infoRent[0]['name_type_contract']; ?>
               </address>
             </div>
             <div class="col-sm-4 invoice-col">
