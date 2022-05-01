@@ -55,6 +55,7 @@
 <?php
 $idRole = $this->session->idRole;
 $darkStyle = $idRole==99?"dark-mode":"";
+$darkStyle = "";
 ?>
 <body class="hold-transition sidebar-mini layout-fixed <?php echo $darkStyle; ?>">
 	<div class="wrapper">
