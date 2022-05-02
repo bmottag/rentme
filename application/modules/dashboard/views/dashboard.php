@@ -92,7 +92,7 @@ $(function(){
 									?>
 			            <div class="btn-group-horizontal">
 									<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal" id="<?php echo $lista['id_rent']; ?>">
-										Editar
+										Edit
 									</button>
 									<a href="<?php echo base_url("dashboard/rent_details/" . $lista['id_rent']); ?>" class="btn btn-info btn-xs">Details <span class="glyphicon glyphicon-edit" aria-hidden="true"></a>
                   <?php

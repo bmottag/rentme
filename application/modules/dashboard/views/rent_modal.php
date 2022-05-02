@@ -9,7 +9,7 @@
 </div>
 
 <div class="modal-body">
-	<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Los campos con * son obligatorios.</small></p>
+	<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Fields with * are required.</small></p>
 	<form name="form" id="form" role="form" method="post" >
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $information?$information[0]["id_rent"]:'x'; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $information?$information[0]["last_message"]:'New Rent'; ?>'/>
@@ -185,9 +185,9 @@
 </div>
 
 <div class="modal-footer justify-content-between">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-primary" >
-		Guardar <span class="fa fa-save" aria-hidden="true">
+		Save <span class="fa fa-save" aria-hidden="true">
 	</button> 
 </div>
 
