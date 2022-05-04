@@ -59,7 +59,7 @@
 				<div class="form-group text-left">
 					<label class="control-label" for="start_date">From: *</label>
                     <div class="input-group date" id="start_date" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" id="start_date" name="start_date" data-target="#start_date" value="<?php echo $information?$information[0]["start_date"]:""; ?>" placeholder="Beginning date"/>
+                        <input type="text" class="form-control datetimepicker-input" id="start_date" name="start_date" data-target="#start_date" value="<?php echo $information?$information[0]["start_date"]:""; ?>" placeholder="From"/>
                         <div class="input-group-append" data-target="#start_date" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -71,7 +71,7 @@
 				<div class="form-group text-left">
 					<label class="control-label" for="finish_date">Until: *</label>
                     <div class="input-group date" id="finish_date" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" id="finish_date" name="finish_date" data-target="#finish_date" value="<?php echo $information?$information[0]["finish_date"]:""; ?>" placeholder="Finish date"/>
+                        <input type="text" class="form-control datetimepicker-input" id="finish_date" name="finish_date" data-target="#finish_date" value="<?php echo $information?$information[0]["finish_date"]:""; ?>" placeholder="Until"/>
                         <div class="input-group-append" data-target="#finish_date" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
@@ -111,7 +111,7 @@
 					<label class="control-label" for="damage">Does the unit has any damage(s)?: *</label>
 					<select name="damage" id="damage" class="form-control">
 						<option value=''>Select...</option>
-						<option value='1' <?php if($information && $information[0]["damage"] == 1) { echo "selected"; } ?>>Si</option>
+						<option value='1' <?php if($information && $information[0]["damage"] == 1) { echo "selected"; } ?>>Yes</option>
 						<option value='2' <?php if($information && $information[0]["damage"] == 2) { echo "selected"; } ?>>No</option>
 					</select>
 				</div>
