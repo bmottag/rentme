@@ -123,36 +123,102 @@
 							</div>
 						</form>
 
-						<table class="table">
-							<tbody>
-						<?php 
-							if($rentStatus)
-							{
-								foreach ($rentStatus as $data):
-						?>
-								<tr>
-									<td class="text-muted small" style="width: 20%">
-										<i class="fa fa-clock-o fa-fw"></i> <?php echo $data['date_issue']; ?>
-									</td>
-									<td class="small" style="width: 15%">
-										<b><?php echo $data['first_name']; ?></b>
-									</td>
-									<td class="small" style="width: 50%">
-										<?php echo $data['observation']; ?>
-									</td>
-									<td style="width: 15%">
-										<small class="badge badge-<?php echo $data['clase']; ?>">
-											<i class="fa <?php echo $data['icono']; ?>"></i>
-											<?php echo $data['name_status']; ?>
-										</small>
-									</td>
-								</tr>
-						<?php
-								endforeach;
-							}
-						?>
-							</tbody>
-						</table>
+						<div class="direct-chat-messages">
+							<table class="table">
+								<tbody>
+							<?php 
+								if($rentStatus)
+								{
+									foreach ($rentStatus as $data):
+							?>
+									<tr>
+										<td class="text-muted small" style="width: 20%">
+											<i class="fa fa-clock-o fa-fw"></i> <?php echo $data['date_issue']; ?>
+										</td>
+										<td class="small" style="width: 15%">
+											<b><?php echo $data['first_name']; ?></b>
+										</td>
+										<td class="small" style="width: 50%">
+											<?php echo $data['observation']; ?>
+										</td>
+										<td style="width: 15%">
+											<small class="badge badge-<?php echo $data['clase']; ?>">
+												<i class="fa <?php echo $data['icono']; ?>"></i>
+												<?php echo $data['name_status']; ?>
+											</small>
+										</td>
+									</tr>
+							<?php
+									endforeach;
+								}
+							?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="card card-success">
+					<div class="card-header">
+						<h3 class="card-title"><i class="ion ion-clipboard mr-1"></i> Attachements</h3>
+					</div>
+					<div class="card-body">
+						<form name="formAttachement" id="formAttachement" method="post">
+							<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-5 input-group input-group-sm">
+										<select name="attachement" id="attachement" class="form-control">
+											<option value="">Select Type...</option>
+											<?php for ($i = 0; $i < count($photosType); $i++) { ?>
+												<option value="<?php echo $photosType[$i]["param_value"]; ?>"><?php echo $photosType[$i]["param_description"]; ?></option>	
+											<?php } ?>
+										</select>
+									</div>
+									<div class="col-3">
+										<button type="button" id="btnAttachement" name="btnAttachement	" class="btn btn-success btn-sm" >
+											Add Attachement <span class="fa fa-save" aria-hidden="true" />
+										</button> 
+									</div>
+								</div>
+							</div>
+						</form>
+
+						<div class="direct-chat-messages">
+							<table class="table">
+								<thead>
+									<tr class="small">
+										<th class='text-center' style="width: 5%">#</th>
+										<th style="width: 75%">Attachement</th>
+										<th class='text-center' style="width: 20%">Date</th>
+									</tr>
+								</thead>
+								<tbody>
+							<?php 
+								if($rentAttachement)
+								{
+									$i = 0;
+									foreach ($rentAttachement as $data):
+										$i++;
+							?>
+									<tr>
+										<td class="small">
+											 <?php echo $i; ?>
+										</td>
+										<td class="small" style="width: 15%">
+											<b><?php echo $data['type']; ?></b>
+										</td>
+										<td class="small">
+											<?php echo $data['date']; ?>
+										</td>
+									</tr>
+							<?php
+									endforeach;
+								}
+							?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -170,7 +236,7 @@
 								<div class="row">
 									<div class="col-3 input-group input-group-sm">
 										<select name="type" id="type" class="form-control">
-											<option value="">Select Status...</option>
+											<option value="">Select Type...</option>
 											<?php for ($i = 0; $i < count($photosType); $i++) { ?>
 												<option value="<?php echo $photosType[$i]["param_value"]; ?>"><?php echo $photosType[$i]["param_description"]; ?></option>	
 											<?php } ?>
