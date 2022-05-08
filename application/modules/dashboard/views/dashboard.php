@@ -67,8 +67,8 @@ $(function(){
 								<th class="text-center">#</th>
 								<th>Client</th>
 								<th>Equipment</th>
-								<th>Start Date</th>
-								<th>Finish Date</th>
+								<th>From</th>
+								<th>Until</th>
 								<th>Status</th>
 								<th>Edit</th>
 								</tr>
