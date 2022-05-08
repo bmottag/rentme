@@ -149,7 +149,16 @@ class Dashboard extends CI_Controller {
 		$data['pageHeaderTitle'] = "Details";
 		$data['info'] = $this->general_model->get_rents($arrParam);
 		$data['status'] = $this->dashboard_model->get_status();
+
+		$arrParam = array(
+			"table" => "rme_param",
+			"order" => "param_value",
+			"column" => "param_code",
+			"id" => ID_PARAM_TYPE_PHOTO
+		);
+		$data['photosType'] = $this->general_model->get_basic_search($arrParam);
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
+		$data['rentPhotos'] = $this->dashboard_model->get_photos_rent($arrParam);
 
 		$data["view"] = 'form_details';
 		$this->load->view("layout", $data);
@@ -229,4 +238,46 @@ class Dashboard extends CI_Controller {
 		}
 		echo json_encode($data);
     }
+
+	/**
+	 * Subir Foto del equipo
+	 * @since 12/12/2020
+     * @author BMOTTAG
+	 */
+    function do_upload_photos() 
+	{
+		$config['upload_path'] = './images/rent/';
+        $config['overwrite'] = false;
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = '3000';
+        $config['max_width'] = '3200';
+        $config['max_height'] = '2400';
+		$idRent = $this->input->post('hddId');
+
+        $this->load->library('upload', $config);
+        //SI LA IMAGEN FALLA AL SUBIR MOSTRAMOS EL ERROR EN LA VISTA 
+        if (!$this->upload->do_upload()) {
+            $error = $this->upload->display_errors();
+            pr($error); exit;
+			$this->foto($idEquipo, $error);
+        } else {
+            $file_info = $this->upload->data();//subimos la imagen
+			
+			$data = array('upload_data' => $this->upload->data());
+			$imagen = $file_info['file_name'];
+			$path = "images/rent/" . $imagen;
+			
+			//insertar datos
+			if($this->dashboard_model->add_photos($path))
+			{
+				$this->session->set_flashdata('retornoExito', 'Equipment photo uploaded.');
+			}else{
+				$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
+			}
+						
+			redirect('dashboard/rent_details/' . $idRent);
+        }
+    }
+
+
 }

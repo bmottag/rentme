@@ -297,4 +297,55 @@ class Dashboard_model extends CI_Model {
 			return false;
 		}
 	}
+
+	/**
+	 * Add fotos
+	 * @since 14/12/2020
+	 */
+	public function add_photos($path) 
+	{							
+			$idUser = $this->session->userdata("idUser");
+
+			$data = array(
+				'fk_id_rent' => $this->input->post('hddId'),
+				'fk_id_user' => $idUser,
+				'fk_id_type' => $this->input->post('type'),
+				'equipment_photo' => $path,
+				'date' => date("Y-m-d"),
+				'description' => 'Photo before rent',
+			);			
+
+			$query = $this->db->insert('rme_rent_photos', $data);
+
+			if ($query) {
+				return true;
+			} else {
+				return false;
+			}
+	}
+
+	/**
+	 * Photos list
+	 * @since 7/5/2022
+	 */
+	public function get_photos_rent($arrData) 
+	{
+		$this->db->select('P.*,  CONCAT(U.first_name, " ", U.last_name) name, R.param_description type');
+		$this->db->join('user U', 'P.fk_id_user = U.id_user', 'INNER');
+		$this->db->join('rme_param R', 'R.param_value = P.fk_id_type', 'INNER');
+		$this->db->where('R.param_code', ID_PARAM_TYPE_PHOTO);
+
+		if (array_key_exists("idRent", $arrData)) {
+			$this->db->where('fk_id_rent', $arrData["idRent"]);
+		}
+				
+		$this->db->order_by('id_photo', 'asc');
+		$query = $this->db->get('rme_rent_photos  P');
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
+	}
 }
