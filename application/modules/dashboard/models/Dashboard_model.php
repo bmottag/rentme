@@ -170,9 +170,18 @@ class Dashboard_model extends CI_Model {
 	public function saveRent() 
 	{
 		$idRent = $this->input->post('hddId');
+		$clean = $this->input->post('clean');
+		$cleaning_date = $this->input->post('cleaning_date');
+		$next_cleaning_date = $this->input->post('next_cleaning_date');
 		$damage = $this->input->post('damage');
 		$damage_observation = $this->input->post('damage_observation');
 
+		if ($clean == 1) {
+			$next_cleaning_date = NULL;
+		}
+		if ($clean == 2) {
+			$cleaning_date = NULL;
+		}
 		if ($damage == 2) {
 			$damage_observation = '';
 		}
@@ -184,6 +193,8 @@ class Dashboard_model extends CI_Model {
 			'finish_date' => $this->input->post('finish_date'),
 			'fuel' => $this->input->post('fuel'),
 			'clean' => $this->input->post('clean'),
+			'cleaning_date' => $cleaning_date,
+			'next_cleaning_date' => $next_cleaning_date,
 			'damage' => $this->input->post('damage'),
 			'damage_observation' => $damage_observation,
 			'fk_id_type_contract' => $this->input->post('type_contract'),

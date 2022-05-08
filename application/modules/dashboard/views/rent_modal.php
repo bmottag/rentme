@@ -95,7 +95,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="clean">Current equipment condition: *</label>
 					<select name="clean" id="clean" class="form-control">
@@ -105,10 +105,44 @@
 					</select>
 				</div>
 			</div>
-		
-			<div class="col-sm-6">
+
+			<?php
+			$limpieza1 = 'style="display: none;"';
+			$limpieza2 = 'style="display: none;"';
+			if ($information && $information[0]["clean"] == 1){
+				$limpieza1 = 'style="display: block;"';
+			}
+			if ($information && $information[0]["clean"] == 2){
+				$limpieza2 = 'style="display: block;"';
+			}
+			?>
+			<div class="col-sm-4" id="limpieza1" <?php echo $limpieza1; ?>>
 				<div class="form-group text-left">
-					<label class="control-label" for="damage">Does the unit has any damage(s)?: *</label>
+					<label class="control-label" for="cleaning_date">Cleaning date: </label>
+					<div class="input-group date" id="cleaning_date" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="cleaning_date" name="cleaning_date" data-target="#cleaning_date" value="<?php echo $information?$information[0]["cleaning_date"]:""; ?>" placeholder="Cleaning date"/>
+                        <div class="input-group-append" data-target="#cleaning_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+
+			<div class="col-sm-4" id="limpieza2" <?php echo $limpieza2; ?>>
+				<div class="form-group text-left">
+					<label class="control-label" for="next_cleaning_date">Next cleaning date: </label>
+					<div class="input-group date" id="next_cleaning_date" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" id="next_cleaning_date" name="next_cleaning_date" data-target="#next_cleaning_date" value="<?php echo $information?$information[0]["next_cleaning_date"]:""; ?>" placeholder="Next cleaning date"/>
+                        <div class="input-group-append" data-target="#next_cleaning_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		
+			<div class="col-sm-4">
+				<div class="form-group text-left">
+					<label class="control-label" for="damage">Does the unit has any damage?: *</label>
 					<select name="damage" id="damage" class="form-control">
 						<option value=''>Select...</option>
 						<option value='1' <?php if($information && $information[0]["damage"] == 1) { echo "selected"; } ?>>Yes</option>
@@ -133,7 +167,7 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="type_contract">Type of rent : *</label>
 					<select name="type_contract" id="type_contract" class="form-control">
@@ -145,7 +179,7 @@
 				</div>
 			</div>
 
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="current_hours">Current unit hours: *</label>
 					<input id="current_hours" name="current_hours" placeholder="Current hours" class="form-control" value="<?php echo $information?$information[0]["current_hours"]:""; ?>">
@@ -198,6 +232,12 @@
         format: 'YYYY-MM-DD'
     });
     $('#finish_date').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+    $('#cleaning_date').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+    $('#next_cleaning_date').datetimepicker({
         format: 'YYYY-MM-DD'
     });
    });

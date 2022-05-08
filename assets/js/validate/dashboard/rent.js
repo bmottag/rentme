@@ -5,6 +5,19 @@ $(function () {
         }
     });
 
+    $("#clean").change(function () {
+        if (this.value == 1) {
+            $("#limpieza1").css({display: "block"});
+            $("#limpieza2").css({display: "none"});
+        } else if (this.value == 2) {
+            $("#limpieza1").css({display: "none"});
+            $("#limpieza2").css({display: "block"});
+        } else {
+            $("#limpieza1").css({display: "none"});
+            $("#limpieza2").css({display: "none"});
+        }
+    });
+
     $("#damage").change(function () {
         if (this.value == 1) {
             $("#oculto").css({display: "block"});
@@ -34,6 +47,8 @@ $(function () {
             finish_date:         { required: true },
             fuel:                { required: true },
             clean:               { required: true },
+            //cleaning_date:       { required: true },
+            //next_cleaning_date:  { required: true },
             damage:              { required: true },
             //damage_observation:  { required: true },
             type_contract:       { required: true },
