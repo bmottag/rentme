@@ -165,6 +165,13 @@ class Dashboard extends CI_Controller {
 			"id" => ID_PARAM_TYPE_PHOTO
 		);
 		$data['photosType'] = $this->general_model->get_basic_search($arrParam);
+		$arrParam = array(
+			"table" => "rme_param",
+			"order" => "param_value",
+			"column" => "param_code",
+			"id" => ID_PARAM_ATTACHEMENTS
+		);
+		$data['attachementList'] = $this->general_model->get_basic_search($arrParam);
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
 		$data['rentPhotos'] = $this->general_model->get_photos_rent($arrParam);
 		$data['rentAttachement'] = $this->general_model->get_attachements_rent($arrParam);

@@ -345,7 +345,8 @@ class Dashboard_model extends CI_Model {
 			'fk_id_rent' => $this->input->post('hddId'),
 			'fk_id_user' => $this->session->userdata("idUser"),
 			'fk_id_attachement' => $this->input->post('attachement'),
-			'date' =>date("Y-m-d")
+			'date' =>date("Y-m-d"),
+			'attachement_description' => $this->input->post('attachement_description')
 		);
 		$query = $this->db->insert('rme_rent_attachements ', $data);
 		if ($query) {

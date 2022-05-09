@@ -38,35 +38,56 @@
 				          	<div class="row invoice-info">
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
-					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?>
+					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
+<?php								
+$movil = $info[0]["param_client_movil"];
+// Separa en grupos de tres 
+$count = strlen($movil); 
+	
+$num_tlf1 = substr($movil, 0, 3); 
+$num_tlf2 = substr($movil, 3, 3); 
+$num_tlf3 = substr($movil, 6, 2); 
+$num_tlf4 = substr($movil, -2); 
 
+if($count == 10){
+	$resultado = "$num_tlf1 $num_tlf2 $num_tlf3 $num_tlf4";  
+}else{
+	
+	$resultado = chunk_split($movil,3," "); 
+}
+?>
+					                <strong>Movil Number: </strong><?php echo $resultado; ?>
+	<a href='<?php echo base_url("external/sendSMSClient/" . $info[0]["id_rent"]); ?>' class='btn btn-info btn-xs' title="Send SMS to Client"><i class='fa fa-paper-plane'></i> Send link to the client</a>
 
-
-	<a href='<?php echo base_url("external/sendSMSClient/" . $info[0]["id_rent"]); ?>' class='btn btn-info btn-xs' title="Send SMS to Client"><i class='fa fa-paper-plane'></i></a>
-
-					                <br>
+					                <br><br>
 					                <strong>Current equipment condition: </strong><?php echo $info[0]['clean']==1?"Clean":"To be clean"; ?><br>
 					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
-					                <p class="text-primary"><strong>From: </strong><?php echo $info[0]['start_date']; ?></p>
+					                <p class="text-<?php echo $info[0]['clase']; ?>"><strong>Actual status: </strong><?php echo $info[0]['name_status']; ?></p>
+					                
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Type of equipment: </strong><?php echo $info[0]['type_2']; ?><br>
-					                <strong>Does the unit has any damage(s)?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
-					                <strong>Current unit hours: </strong><?php echo $info[0]['current_hours']; ?><br>
-					                <p class="text-primary"><strong>Until: </strong><?php echo $info[0]['finish_date']; ?></p>
+					                <strong>Equipment: </strong><?php echo $info[0]['unit_number'] ?>---><?php echo $info[0]['description'] ?><br><br>
+					                <p class="text-primary">
+					                		<strong>From: </strong><?php echo $info[0]['start_date']; ?></br>
+															<strong>Until: </strong><?php echo $info[0]['finish_date']; ?>
+													</p>
+
+
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
 					              <address>
-					                <strong>Equipment: </strong><?php echo $info[0]['unit_number'] ?>---><?php echo $info[0]['description'] ?><br>
-					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']; ?><br>
+					                <strong>Current unit hours: </strong><?php echo $info[0]['current_hours']; ?><br>
+					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']; ?><br><br>
+					                <strong>Does the unit has any damage(s)?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
 					                <?php if ($info[0]['damage']==1) { ?>
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>
 					                <strong>Observations: </strong><?php echo $info[0]['observations']; ?>
-					                <p class="text-<?php echo $info[0]['clase']; ?>"><strong>Actual status: </strong><?php echo $info[0]['name_status']; ?></p>
+
 					              </address>
 					            </div>
 				          	</div>
@@ -98,7 +119,6 @@
 									</div>
 									<div class="col-6 input-group input-group-sm">
 											<input type="text" id="information" name="information"placeholder="Additional information" class="form-control">
-		
 									</div>
 									<div class="col-3">
 										<button type="button" id="btnState" name="btnState" class="btn btn-primary btn-sm" >
@@ -153,17 +173,21 @@
 							<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
 							<div class="card-body">
 								<div class="row">
-									<div class="col-5 input-group input-group-sm">
+									<div class="col-4 input-group input-group-sm">
 										<select name="attachement" id="attachement" class="form-control">
-											<option value="">Select Type...</option>
-											<?php for ($i = 0; $i < count($photosType); $i++) { ?>
-												<option value="<?php echo $photosType[$i]["param_value"]; ?>"><?php echo $photosType[$i]["param_description"]; ?></option>	
+											<option value=''>Select...</option>
+											<?php 
+											foreach ($attachementList as $fila) { ?>
+												<option value="<?php echo $fila["param_value"]; ?>"><?php echo $fila["param_description"]; ?></option>
 											<?php } ?>
 										</select>
 									</div>
-									<div class="col-3">
+									<div class="col-6 input-group input-group-sm">
+											<input type="text" id="attachement_description" name="attachement_description"placeholder="More Info" class="form-control">
+									</div>
+									<div class="col-2">
 										<button type="button" id="btnAttachement" name="btnAttachement	" class="btn btn-success btn-sm" >
-											Add Attachement <span class="fa fa-save" aria-hidden="true" />
+											Add <span class="fa fa-save" aria-hidden="true" />
 										</button> 
 									</div>
 								</div>
@@ -175,7 +199,8 @@
 								<thead>
 									<tr class="small">
 										<th class='text-center' style="width: 5%">#</th>
-										<th style="width: 75%">Attachement</th>
+										<th style="width: 45%">Attachement</th>
+										<th style="width: 30%">More Info</th>
 										<th class='text-center' style="width: 20%">Date</th>
 									</tr>
 								</thead>
@@ -188,13 +213,16 @@
 										$i++;
 							?>
 									<tr>
-										<td class="small">
+										<td class="text-center small">
 											 <?php echo $i; ?>
 										</td>
-										<td class="small" style="width: 15%">
-											<b><?php echo $data['type']; ?></b>
+										<td class="small">
+											<?php echo $data['type']; ?>
 										</td>
 										<td class="small">
+											<?php echo $data['attachement_description']; ?>
+										</td>
+										<td class="text-center small">
 											<?php echo $data['date']; ?>
 										</td>
 									</tr>

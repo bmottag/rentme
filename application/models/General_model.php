@@ -426,7 +426,7 @@ class General_model extends CI_Model {
 		$this->db->select('A.*,  CONCAT(U.first_name, " ", U.last_name) name, R.param_description type');
 		$this->db->join('user U', 'A.fk_id_user = U.id_user', 'INNER');
 		$this->db->join('rme_param R', 'R.param_value = A.fk_id_attachement', 'INNER');
-		$this->db->where('R.param_code', ID_PARAM_TYPE_PHOTO);
+		$this->db->where('R.param_code', ID_PARAM_ATTACHEMENTS);
 
 		if (array_key_exists("idRent", $arrData)) {
 			$this->db->where('fk_id_rent', $arrData["idRent"]);
