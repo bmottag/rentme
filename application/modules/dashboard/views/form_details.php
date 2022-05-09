@@ -38,7 +38,13 @@
 				          	<div class="row invoice-info">
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
-					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
+					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?>
+
+
+
+	<a href='<?php echo base_url("external/sendSMSClient/" . $info[0]["id_rent"]); ?>' class='btn btn-info btn-xs' title="Send SMS to Client"><i class='fa fa-paper-plane'></i></a>
+
+					                <br>
 					                <strong>Current equipment condition: </strong><?php echo $info[0]['clean']==1?"Clean":"To be clean"; ?><br>
 					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
 					                <p class="text-primary"><strong>From: </strong><?php echo $info[0]['start_date']; ?></p>

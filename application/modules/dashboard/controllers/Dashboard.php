@@ -158,8 +158,8 @@ class Dashboard extends CI_Controller {
 		);
 		$data['photosType'] = $this->general_model->get_basic_search($arrParam);
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
-		$data['rentPhotos'] = $this->dashboard_model->get_photos_rent($arrParam);
-		$data['rentAttachement'] = $this->dashboard_model->get_attachements_rent($arrParam);
+		$data['rentPhotos'] = $this->general_model->get_photos_rent($arrParam);
+		$data['rentAttachement'] = $this->general_model->get_attachements_rent($arrParam);
 
 		$data["view"] = 'form_details';
 		$this->load->view("layout", $data);
