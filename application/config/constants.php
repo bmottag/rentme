@@ -87,3 +87,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
  * Custom defines
  */
 defined('ID_PARAM_TYPE_PHOTO')   OR define('ID_PARAM_TYPE_PHOTO', 1);
+defined('ID_PARAM_CURRENT_FUEL')   OR define('ID_PARAM_CURRENT_FUEL', 2);

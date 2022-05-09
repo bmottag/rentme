@@ -84,11 +84,10 @@
 					<label class="control-label" for="fuel">Current Fuel: *</label>
 					<select name="fuel" id="fuel" class="form-control">
 						<option value=''>Select...</option>
-						<option value='1' <?php if($information && $information[0]["fuel"] == 1) { echo "selected"; } ?>>Empty</option>
-						<option value='2' <?php if($information && $information[0]["fuel"] == 2) { echo "selected"; } ?>>1/4</option>
-						<option value='3' <?php if($information && $information[0]["fuel"] == 3) { echo "selected"; } ?>>1/2</option>
-						<option value='4' <?php if($information && $information[0]["fuel"] == 4) { echo "selected"; } ?>>3/4</option>
-						<option value='5' <?php if($information && $information[0]["fuel"] == 5) { echo "selected"; } ?>>Full</option>
+						<?php 
+						foreach ($currentFuelList as $fila) { ?>
+							<option value="<?php echo $fila["param_value"]; ?>" <?php if($information && $information[0]["fuel"] == $fila["param_value"]) { echo "selected"; }  ?>><?php echo $fila["param_description"]; ?></option>
+						<?php } ?>
 					</select>
 				</div>
 			</div>

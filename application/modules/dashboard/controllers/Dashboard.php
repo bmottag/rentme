@@ -60,6 +60,14 @@ class Dashboard extends CI_Controller {
 				"id" => 1
 			);
 			$data['equipmentType'] = $this->general_model->get_basic_search($arrParam);
+
+			$arrParam = array(
+				"table" => "rme_param",
+				"order" => "param_value",
+				"column" => "param_code",
+				"id" => ID_PARAM_CURRENT_FUEL
+			);
+			$data['currentFuelList'] = $this->general_model->get_basic_search($arrParam);
 			$data['contractType'] = $this->dashboard_model->get_type_contract();
 			
 			$this->load->view("rent_modal", $data);

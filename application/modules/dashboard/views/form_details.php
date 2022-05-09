@@ -61,27 +61,7 @@
 					            <div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Equipment: </strong><?php echo $info[0]['unit_number'] ?>---><?php echo $info[0]['description'] ?><br>
-					                <strong>Current Fuel: </strong>
-					                <?php 
-									switch ($info[0]['fuel']) {
-										case 1:
-											echo "Empty"; 
-											break;
-										case 2:
-											echo "1/4"; 
-											break;
-										case 3:
-											echo"1/2"; 
-											break;
-										case 4:
-											echo "3/4"; 
-											break;
-										case 5:
-											echo "Full"; 
-											break;
-									}
-					                ?>
-					                <br>
+					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']; ?><br>
 					                <?php if ($info[0]['damage']==1) { ?>
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>
