@@ -18,7 +18,7 @@ class External extends CI_Controller {
 	public function sendSMSClient($idRent)
 	{			
 		$this->load->model("general_model");
-		//$this->load->library('encrypt');
+		$this->load->library('encrypt');
 		require 'vendor/Twilio/autoload.php';
 
 		//busco datos parametricos twilio
@@ -29,11 +29,11 @@ class External extends CI_Controller {
 		);
 		$this->load->model("general_model");
 		$parametric = $this->general_model->get_basic_search($arrParam);						
-		//$dato1 = $this->encrypt->decode($parametric[3]["value"]);
-		//$dato2 = $this->encrypt->decode($parametric[4]["value"]);
+		$dato1 = $this->encrypt->decode($parametric[3]["value"]);
+		$dato2 = $this->encrypt->decode($parametric[4]["value"]);
 		$phone = $parametric[5]["value"];
 		
-        //$client = new Twilio\Rest\Client($dato1, $dato2);														
+        $client = new Twilio\Rest\Client($dato1, $dato2);														
 		$arrParam = array('idRent' => $idRent);
 		$information = $this->general_model->get_rents($arrParam);//search the last 5 records
 
@@ -44,7 +44,7 @@ class External extends CI_Controller {
 		$mensaje .= "\n";
 		$mensaje .= base_url("external/review_rent/" . $idRent);
 
-		$to = '+1' . $information[0]['param_client_movil'];		
+		$to = '+1' . $information[0]['param_client_movil'];	
 		$client->messages->create(
 			$to,
 			array(
@@ -53,11 +53,11 @@ class External extends CI_Controller {
 			)
 		);
 
-		$data['linkBack'] = "jobs/review_excavation/" . $idExcavation;
-		$data['titulo'] = "<i class='fa fa-pied-piper-alt'></i>Excavation and Trenching Plan - SMS";
+		$data['linkBack'] = "jobs/review_excavation/" . $idRent;
+		$data['titulo'] = "<i class='fa fa-pied-piper-alt'></i>Rent Information - SMS";
 		
 		$data['clase'] = "alert-info";
-		$data['msj'] = "You have send the SMS to Subcontractors";
+		$data['msj'] = "You have send the SMS to the client";
 
 		$data["view"] = 'template/answer';
 		$this->load->view("layout", $data);
