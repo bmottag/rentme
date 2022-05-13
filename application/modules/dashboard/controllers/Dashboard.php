@@ -14,9 +14,11 @@ class Dashboard extends CI_Controller {
 	 */
 	public function super_admin()
 	{
-			$arrParam["limit"] = 30;//Limite de registros para la consulta
-			$data['info'] = $this->general_model->get_rents($arrParam);//search the last 5 records
+			$arrParam["limit"] = 30; //Limite de registros para la consulta
+			$data['info'] = $this->general_model->get_rents($arrParam); //search the last 5 records
 			$data['pageHeaderTitle'] = "Dashboard";
+			//$this->send_email(4);
+			//pr($data['info']);exit;
 
 			$data["view"] = "dashboard";
 			$this->load->view("layout", $data);
@@ -26,17 +28,17 @@ class Dashboard extends CI_Controller {
      * Rent modal 
      * @since 28/2/2022
      */
-    public function cargarModalRent() 
+    public function cargarModalRent()
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
 			
 			$data['information'] = FALSE;
 			$data['trucks']  = FALSE;
-			$idRent = $this->input->post("idRent");
+			$data['idRent'] = $this->input->post("idRent");
 
-			if ($idRent != 'x') {
+			if ($data['idRent'] != 'x') {
 				$arrParam = array(
-					"idRent" => $idRent
+					"idRent" => $data['idRent']
 				);
 				$data['information'] = $this->general_model->get_rents($arrParam);
 				$company = 1;
@@ -79,7 +81,7 @@ class Dashboard extends CI_Controller {
      * @author BMOTTAG
 	 */
 	public function save_rent()
-	{			
+	{
 		header('Content-Type: application/json');
 		$data = array();
 		$idRent = $this->input->post('hddId');
@@ -87,8 +89,11 @@ class Dashboard extends CI_Controller {
 		if ($idRent != 'x') {
 			$msj = "Se actualizó con exito el registro!";
 		}
-		if ($idRent = $this->dashboard_model->saveRent()) {
-			$data["result"] = true;		
+		if ($idRentNew = $this->dashboard_model->saveRent()) {
+			if ($idRent != 'x' && $this->input->post('clean') == 2) {
+				$this->send_email($idRentNew);
+			}
+			$data["result"] = true;
 			$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
 		} else {
 			$data["result"] = "error";
@@ -158,20 +163,20 @@ class Dashboard extends CI_Controller {
 		$data['info'] = $this->general_model->get_rents($arrParam);
 		$data['status'] = $this->dashboard_model->get_status();
 
-		$arrParam = array(
+		$arrParamPhoto = array(
 			"table" => "rme_param",
 			"order" => "param_value",
 			"column" => "param_code",
 			"id" => ID_PARAM_TYPE_PHOTO
 		);
-		$data['photosType'] = $this->general_model->get_basic_search($arrParam);
-		$arrParam = array(
+		$data['photosType'] = $this->general_model->get_basic_search($arrParamPhoto);
+		$arrParamAttachement = array(
 			"table" => "rme_param",
 			"order" => "param_value",
 			"column" => "param_code",
 			"id" => ID_PARAM_ATTACHEMENTS
 		);
-		$data['attachementList'] = $this->general_model->get_basic_search($arrParam);
+		$data['attachementList'] = $this->general_model->get_basic_search($arrParamAttachement);
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
 		$data['rentPhotos'] = $this->general_model->get_photos_rent($arrParam);
 		$data['rentAttachement'] = $this->general_model->get_attachements_rent($arrParam);
@@ -217,7 +222,12 @@ class Dashboard extends CI_Controller {
 	{
 		header('Content-Type: application/json');
 		$data = array();
-		$nextChange = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
+		$idRent = $this->input->post('hddId');
+		if ($idRent != 'x'){
+			$nextChange = $this->dashboard_model->get_truck_by_id($this->input->post('hddTruck'));
+		} else {
+			$nextChange = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
+		}
 		$hoursContract = $this->dashboard_model->get_hours_contract($this->input->post('type_contract'));
 		$currentHours = $this->input->post('current_hours');
 
@@ -315,5 +325,51 @@ class Dashboard extends CI_Controller {
 		echo json_encode($data);
     }
 
+    /**
+	 * Send Email
+     * @since 9/5/2022
+     * @author BMOTTAG
+	 */
+	public function send_email($id)
+	{
+		$arrParam = array(
+			"idRent" => $id
+		);
+		$info = $this->general_model->get_rents($arrParam);
+		
+		$subjet = "Rentme All - Cleaning Machine";
+		$user = $info[0]['param_client_contact'];
+		//$to = $info[0]['param_client_email'];
+		$to = 'andres.cubillos100@gmail.com';
+		$fecha = $info[0]['next_cleaning_date'];
+		$equipment = $info[0]['unit_number'] .' -----> '. $info[0]['description'] ;
+		$client = $info[0]['param_client_name'];
+		$start_date = $info[0]['start_date'];
+		$finish_date = $info[0]['finish_date'];
+
+		$mensaje = "<html>
+		<head>
+		  <title> $subjet </title>
+		</head>
+		<body>
+			<p>Dear	$user:</p>
+			<p>Please clean the machine by this date: $fecha</p>
+			<p>Equipment: $equipment</p>
+			<p>Client: $client</p>
+			<p>From: $start_date - Until: $finish_date</p>
+			<p>Cordially,</p>
+			<p><strong>RENTME ALL</strong></p>
+		</body>
+		</html>";
+
+		$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+		$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+		$cabeceras .= 'To: ' . $user . '<' . $to . '>' . "\r\n";
+		$cabeceras .= 'From: RENTME ALL <info@v-contracting.ca>' . "\r\n";
+
+		//enviar correo
+		mail($to, $subjet, $mensaje, $cabeceras);
+		return true;
+    }
 
 }

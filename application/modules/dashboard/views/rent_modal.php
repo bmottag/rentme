@@ -12,12 +12,13 @@
 	<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Fields with * are required.</small></p>
 	<form name="form" id="form" role="form" method="post" >
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $information?$information[0]["id_rent"]:'x'; ?>'/>
+		<input type="hidden" id="hddTruck" name="hddTruck" value='<?php echo $information?$information[0]["fk_id_equipment"]:'x'; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $information?$information[0]["last_message"]:'New Rent'; ?>'/>
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="id_client">Client: *</label>
-					<select name="id_client" id="id_client" class="form-control">
+					<select name="id_client" id="id_client" class="form-control" <?php if($idRent != 'x') { ?> disabled <?php } ?>>
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($clientList); $i++) { ?>
 							<option value="<?php echo $clientList[$i]["id_param_client"]; ?>" <?php if($information && $clientList[$i]["id_param_client"] == $information[0]['fk_id_client']) { echo "selected"; } ?>><?php echo $clientList[$i]["param_client_name"]; ?></option>	
@@ -29,7 +30,7 @@
 			<div class="col-sm-4">
 				<div class="form-group text-left">
 					<label class="control-label" for="type">Type of equipment: *</label>
-					<select name="type" id="type" class="form-control">
+					<select name="type" id="type" class="form-control" <?php if($idRent != 'x') { ?> disabled <?php } ?>>
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($equipmentType); $i++) { ?>
 							<option value="<?php echo $equipmentType[$i]["id_type_2"]; ?>" <?php if($information && $information[0]["type_level_2"] == $equipmentType[$i]["id_type_2"]) { echo "selected"; }  ?>><?php echo $equipmentType[$i]["type_2"]; ?></option>
@@ -42,7 +43,7 @@
 				<div class="form-group text-left">
 					<div id="div_truck">
 						<label for="truck">Equipment: *</label>
-						<select name="truck" id="truck" class="form-control">
+						<select name="truck" id="truck" class="form-control" <?php if($idRent != 'x') { ?> disabled <?php } ?>>
 							<option value=''>Select...</option>
 							<?php 
 							foreach ($trucks as $fila) { ?>
@@ -84,9 +85,9 @@
 					<label class="control-label" for="fuel">Current Fuel: *</label>
 					<select name="fuel" id="fuel" class="form-control">
 						<option value=''>Select...</option>
-						<?php 
+						<?php
 						foreach ($currentFuelList as $fila) { ?>
-							<option value="<?php echo $fila["param_value"]; ?>" <?php if($information && $information[0]["fuel"] == $fila["param_value"]) { echo "selected"; }  ?>><?php echo $fila["param_description"]; ?></option>
+							<option value="<?php echo $fila["param_value"]; ?>" <?php if(!empty($information[0]["fk_id_fuel"]) && $information[0]["fk_id_fuel"] == $fila["param_value"]) { echo "selected"; }  ?>><?php echo $fila["param_description"]; ?></option>
 						<?php } ?>
 					</select>
 				</div>

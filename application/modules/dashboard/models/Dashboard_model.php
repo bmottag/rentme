@@ -170,32 +170,41 @@ class Dashboard_model extends CI_Model {
 	public function saveRent() 
 	{
 		$idRent = $this->input->post('hddId');
+		$fuel = $this->input->post('fuel');
 		$clean = $this->input->post('clean');
 		$cleaning_date = $this->input->post('cleaning_date');
 		$next_cleaning_date = $this->input->post('next_cleaning_date');
 		$damage = $this->input->post('damage');
 		$damage_observation = $this->input->post('damage_observation');
 
+		if (empty($fuel)){
+			$fuel = NULL;
+		}
 		if ($clean == 1) {
 			$next_cleaning_date = NULL;
-		}
-		if ($clean == 2) {
+		} else if ($clean == 2) {
 			$cleaning_date = NULL;
 		}
-		if ($damage == 2) {
-			$damage_observation = '';
+		else {
+			$clean = NULL;
+			$cleaning_date = NULL;
+			$next_cleaning_date = NULL;
+		}
+		if ($damage != 1) {
+			$damage_observation = NULL;
+			if (empty($damage)){
+				$damage = NULL;
+			}
 		}
 		
 		$data = array(
-			'fk_id_client' => $this->input->post('id_client'),
-			'fk_id_equipment' => $this->input->post('truck'),
 			'start_date' => $this->input->post('start_date'),
 			'finish_date' => $this->input->post('finish_date'),
-			'fuel' => $this->input->post('fuel'),
-			'clean' => $this->input->post('clean'),
+			'fk_id_fuel' => $fuel,
+			'clean' => $clean,
 			'cleaning_date' => $cleaning_date,
 			'next_cleaning_date' => $next_cleaning_date,
-			'damage' => $this->input->post('damage'),
+			'damage' => $damage,
 			'damage_observation' => $damage_observation,
 			'fk_id_type_contract' => $this->input->post('type_contract'),
 			'current_hours' => $this->input->post('current_hours'),
@@ -204,6 +213,8 @@ class Dashboard_model extends CI_Model {
 		
 		//revisar si es para adicionar o editar
 		if ($idRent == 'x') {
+			$data['fk_id_client'] = $this->input->post('id_client');
+			$data['fk_id_equipment'] = $this->input->post('truck');
 			$data['fk_id_status'] = 1;
 			$data['last_message'] = $this->input->post('last_message');
 			$query = $this->db->insert('rme_rent', $data);
@@ -223,7 +234,7 @@ class Dashboard_model extends CI_Model {
 			$query = $this->db->update('rme_rent', $data);
 		}
 		if ($query) {
-			return true;
+			return $idRent;
 		} else {
 			return false;
 		}
@@ -283,7 +294,7 @@ class Dashboard_model extends CI_Model {
 				'fk_id_user' => $arrParam['fk_id_user'],
 				'date_issue' => $arrParam['date_issue'],
 				'observation' => $arrParam['observation'],
-				'status' => 0								
+				'status' => 0
 			);
 			$this->db->insert('rme_workorder_status', $datos);
 		} else {

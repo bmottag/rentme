@@ -45,12 +45,6 @@ $(function () {
             truck:               { required: true },
             start_date:          { required: true },
             finish_date:         { required: true },
-            fuel:                { required: true },
-            clean:               { required: true },
-            //cleaning_date:       { required: true },
-            //next_cleaning_date:  { required: true },
-            damage:              { required: true },
-            //damage_observation:  { required: true },
             type_contract:       { required: true },
             current_hours:       { required: true },
             observations:        { required: true }
@@ -116,7 +110,12 @@ $(function () {
 });
 
 function getMaintenance(){
-    var equipment = $('#truck').val();
+    var id = $('#hddId').val();
+    if (id != 'x'){
+        var equipment = $('#hddTruck').val();
+    } else {
+        var equipment = $('#truck').val();
+    }
     var type_contract = $('#type_contract').val();
     var current_hours = $('#current_hours').val();
     if (equipment != '' && type_contract != '' && current_hours != '') {

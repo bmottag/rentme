@@ -264,7 +264,7 @@ class General_model extends CI_Model {
 	 * Lista de quipos rentado
 	 * @since 28/2/2022
 	 */
-	public function get_rents($arrData) 
+	public function get_rents($arrData)
 	{
 		$this->db->select();
 		$this->db->join('param_vehicle V', 'V.id_vehicle = R.fk_id_equipment', 'INNER');
@@ -272,8 +272,7 @@ class General_model extends CI_Model {
 		$this->db->join('param_vehicle_type_2 V2', 'V2.id_type_2 = V.type_level_2', 'INNER');
 		$this->db->join('rme_param_status S', 'S.id_status = R.fk_id_status', 'INNER');
 		$this->db->join('rme_param_type_contract T', 'T.id_type_contract = R.fk_id_type_contract', 'INNER');
-		$this->db->join('rme_param P', 'P.param_value = R.fk_id_fuel', 'INNER');
-		$this->db->where('P.param_code', ID_PARAM_CURRENT_FUEL);
+		$this->db->join('rme_param P', 'P.param_value = R.fk_id_fuel AND P.param_code = '. ID_PARAM_CURRENT_FUEL, 'LEFT');
 
 		if (array_key_exists("idRent", $arrData)) {
 			$this->db->where('id_rent', $arrData["idRent"]);
