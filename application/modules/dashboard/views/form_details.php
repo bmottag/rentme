@@ -1,4 +1,22 @@
 <script type="text/javascript" src="<?php echo base_url("assets/js/validate/dashboard/rent_details.js"); ?>"></script>
+
+<script>
+$(function(){ 
+	$("#<?php echo $info[0]["id_rent"]; ?>").click(function () {	
+		var oID = $(this).attr("id");
+    $.ajax ({
+        type: 'POST',
+				url: base_url + 'dashboard/cargarModalCondition',
+        data: {'idRent': oID},
+        cache: false,
+        success: function (data) {
+            $('#datosCondition').html(data);
+        }
+    });
+	});	
+});
+</script>
+
 <?php
 	$retornoExito = $this->session->flashdata('retornoExito');
 	if ($retornoExito) {
@@ -22,6 +40,7 @@
 <?php
 	}
 ?>
+
 <section class="content">
 	<div class="container-fluid">
 
@@ -39,31 +58,35 @@
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
-<?php								
-$movil = $info[0]["param_client_movil"];
-// Separa en grupos de tres 
-$count = strlen($movil); 
-	
-$num_tlf1 = substr($movil, 0, 3); 
-$num_tlf2 = substr($movil, 3, 3); 
-$num_tlf3 = substr($movil, 6, 2); 
-$num_tlf4 = substr($movil, -2); 
+													<?php								
+													$movil = $info[0]["param_client_movil"];
+													// Separa en grupos de tres 
+													$count = strlen($movil); 
+														
+													$num_tlf1 = substr($movil, 0, 3); 
+													$num_tlf2 = substr($movil, 3, 3); 
+													$num_tlf3 = substr($movil, 6, 2); 
+													$num_tlf4 = substr($movil, -2); 
 
-if($count == 10){
-	$resultado = "$num_tlf1 $num_tlf2 $num_tlf3 $num_tlf4";  
-}else{
-	
-	$resultado = chunk_split($movil,3," "); 
-}
-?>
+													if($count == 10){
+														$resultado = "$num_tlf1 $num_tlf2 $num_tlf3 $num_tlf4";  
+													}else{
+														
+														$resultado = chunk_split($movil,3," ");
+													}
+													?>
 					                <strong>Movil Number: </strong><?php echo $resultado; ?>
-	<a href='<?php echo base_url("external/sendSMSClient/" . $info[0]["id_rent"]); ?>' class='btn btn-info btn-xs' title="Send SMS to Client"><i class='fa fa-paper-plane'></i> Send link to the client</a>
+													<a href='<?php echo base_url("external/sendSMSClient/" . $info[0]["id_rent"]); ?>' class='btn btn-info btn-xs' title="Send SMS to Client"><i class='fa fa-paper-plane'></i> Send link to the client</a>
 
 					                <br><br>
-					                <strong>Current equipment condition: </strong><?php echo $info[0]['clean']==1?"Clean":"To be clean"; ?><br>
+					                <strong>Current equipment condition: </strong><?php if ($info[0]['clean'] == 1) { ?> Clean <?php } else if ($info[0]['clean'] == 2) { ?> To be clean <?php } else { ?> <?php } ?><br>
 					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
 					                <p class="text-<?php echo $info[0]['clase']; ?>"><strong>Actual status: </strong><?php echo $info[0]['name_status']; ?></p>
 					                
+													<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" id="<?php echo $info[0]["id_rent"] ?>">
+														Current Condition <span class="fa fa-edit" aria-hidden="true"></span> 
+													</button>
+
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
@@ -81,8 +104,8 @@ if($count == 10){
 					            <div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Current unit hours: </strong><?php echo $info[0]['current_hours']; ?><br>
-					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']; ?><br><br>
-					                <strong>Does the unit has any damage(s)?: </strong><?php echo $info[0]['damage']==1?"Si":"No"; ?><br>
+					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']!=''?$info[0]['param_description']:''; ?><br><br>
+					                <strong>Does the unit has any damage(s)?: </strong><?php if ($info[0]['damage'] == 1) { ?> Si <?php } else if ($info[0]['damage'] == 2) { ?> No <?php } else { ?> <?php } ?><br>
 					                <?php if ($info[0]['damage']==1) { ?>
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>
@@ -308,6 +331,16 @@ if($count == 10){
         </div>
 	</div>
 </section>
+
+<!--INICIO Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content" id="datosCondition">
+
+		</div>
+	</div>
+</div>
+<!--FIN Modal -->
   
 <link rel="stylesheet" href="<?php echo base_url("assets/bootstrap/plugins/ekko-lightbox/ekko-lightbox.css"); ?>">
 <script src="<?php echo base_url('assets/bootstrap/plugins/ekko-lightbox/ekko-lightbox.min.js'); ?>"></script>

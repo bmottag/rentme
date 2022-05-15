@@ -164,6 +164,23 @@ class Dashboard_model extends CI_Model {
 	}
 
 	/**
+	 * List of users
+	 * @since 14/05/2022
+	 */
+	public function get_list_users()
+	{
+		$this->db->where('state', 1);
+		$this->db->order_by('first_name','last_name', 'asc');
+		$query = $this->db->get('user');
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Save rent
 	 * @since 2/4/2018
 	 */
@@ -208,7 +225,8 @@ class Dashboard_model extends CI_Model {
 			'damage_observation' => $damage_observation,
 			'fk_id_type_contract' => $this->input->post('type_contract'),
 			'current_hours' => $this->input->post('current_hours'),
-			'observations' => $this->input->post('observations')
+			'fk_id_user' => $this->input->post('responsible'),
+			'observations' => $this->input->post('observations'),
 		);
 		
 		//revisar si es para adicionar o editar
@@ -266,6 +284,47 @@ class Dashboard_model extends CI_Model {
 			} else {
 				return false;
 			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Save rent
+	 * @since 2/4/2018
+	 */
+	public function saveCurrentCondition() 
+	{
+		$idRent = $this->input->post('hddId');
+		$clean = $this->input->post('clean');
+		$cleaning_date = $this->input->post('cleaning_date');
+		$next_cleaning_date = $this->input->post('next_cleaning_date');
+		$damage = $this->input->post('damage');
+		$damage_observation = $this->input->post('damage_observation');
+
+		if ($clean == 1) {
+			$next_cleaning_date = NULL;
+		} else if ($clean == 2) {
+			$cleaning_date = NULL;
+		}
+		if ($damage != 1) {
+			$damage_observation = NULL;
+		}
+		
+		$data = array(
+			'fk_id_fuel' => $this->input->post('fuel'),
+			'clean' => $clean,
+			'cleaning_date' => $cleaning_date,
+			'next_cleaning_date' => $next_cleaning_date,
+			'damage' => $damage,
+			'damage_observation' => $damage_observation,
+			
+		);
+		
+		$this->db->where('id_rent', $idRent);
+		$query = $this->db->update('rme_rent', $data);
+		if ($query) {
+			return $idRent;
 		} else {
 			return false;
 		}

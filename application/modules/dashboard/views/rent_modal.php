@@ -9,8 +9,8 @@
 </div>
 
 <div class="modal-body">
-	<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Fields with * are required.</small></p>
 	<form name="form" id="form" role="form" method="post" >
+		<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Fields with * are required.</small></p>
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $information?$information[0]["id_rent"]:'x'; ?>'/>
 		<input type="hidden" id="hddTruck" name="hddTruck" value='<?php echo $information?$information[0]["fk_id_equipment"]:'x'; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $information?$information[0]["last_message"]:'New Rent'; ?>'/>
@@ -21,7 +21,7 @@
 					<select name="id_client" id="id_client" class="form-control" <?php if($idRent != 'x') { ?> disabled <?php } ?>>
 						<option value=''>Select...</option>
 						<?php for ($i = 0; $i < count($clientList); $i++) { ?>
-							<option value="<?php echo $clientList[$i]["id_param_client"]; ?>" <?php if($information && $clientList[$i]["id_param_client"] == $information[0]['fk_id_client']) { echo "selected"; } ?>><?php echo $clientList[$i]["param_client_name"]; ?></option>	
+							<option value="<?php echo $clientList[$i]["id_param_client"]; ?>" <?php if($information && $clientList[$i]["id_param_client"] == $information[0]['fk_id_client']) { echo "selected"; } ?>><?php echo $clientList[$i]["param_client_name"]; ?></option>
 						<?php } ?>
 					</select>
 				</div>
@@ -82,7 +82,7 @@
 			
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="fuel">Current Fuel: *</label>
+					<label class="control-label" for="fuel">Current Fuel: </label>
 					<select name="fuel" id="fuel" class="form-control">
 						<option value=''>Select...</option>
 						<?php
@@ -97,7 +97,7 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="clean">Current equipment condition: *</label>
+					<label class="control-label" for="clean">Current equipment condition: </label>
 					<select name="clean" id="clean" class="form-control">
 						<option value=''>Select...</option>
 						<option value='1' <?php if($information && $information[0]["clean"] == 1) { echo "selected"; } ?>>Clean</option>
@@ -142,7 +142,7 @@
 		
 			<div class="col-sm-4">
 				<div class="form-group text-left">
-					<label class="control-label" for="damage">Does the unit has any damage?: *</label>
+					<label class="control-label" for="damage">Does the unit has any damage?: </label>
 					<select name="damage" id="damage" class="form-control">
 						<option value=''>Select...</option>
 						<option value='1' <?php if($information && $information[0]["damage"] == 1) { echo "selected"; } ?>>Yes</option>
@@ -183,6 +183,18 @@
 				<div class="form-group text-left">
 					<label class="control-label" for="current_hours">Current unit hours: *</label>
 					<input id="current_hours" name="current_hours" placeholder="Current hours" class="form-control" value="<?php echo $information?$information[0]["current_hours"]:""; ?>">
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group text-left">
+					<label class="control-label" for="responsible">Responsible: *</label>
+					<select name="responsible" id="responsible" class="form-control">
+						<option value=''>Select...</option>
+						<?php for ($i = 0; $i < count($usersList); $i++) { ?>
+							<option value="<?php echo $usersList[$i]["id_user"]; ?>" <?php if($information && $usersList[$i]["id_user"] == $information[0]['fk_id_user']) { echo "selected"; } ?>><?php echo $usersList[$i]["first_name"] .' '. $usersList[$i]["last_name"]; ?></option>
+						<?php } ?>
+					</select>
 				</div>
 			</div>
 		</div>

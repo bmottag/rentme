@@ -17,9 +17,7 @@ class Dashboard extends CI_Controller {
 			$arrParam["limit"] = 30; //Limite de registros para la consulta
 			$data['info'] = $this->general_model->get_rents($arrParam); //search the last 5 records
 			$data['pageHeaderTitle'] = "Dashboard";
-			//$this->send_email(4);
 			//pr($data['info']);exit;
-
 			$data["view"] = "dashboard";
 			$this->load->view("layout", $data);
 	}
@@ -31,11 +29,9 @@ class Dashboard extends CI_Controller {
     public function cargarModalRent()
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
-			
 			$data['information'] = FALSE;
 			$data['trucks']  = FALSE;
 			$data['idRent'] = $this->input->post("idRent");
-
 			if ($data['idRent'] != 'x') {
 				$arrParam = array(
 					"idRent" => $data['idRent']
@@ -45,7 +41,6 @@ class Dashboard extends CI_Controller {
 				$type = $data['information'][0]["type_level_2"];
 				$data['trucks'] = $this->dashboard_model->get_trucks_by_id2($company, $type);
 			}
-
 			$arrParam = array(
 				"table" => "rme_param_client",
 				"order" => "param_client_name",
@@ -53,8 +48,7 @@ class Dashboard extends CI_Controller {
 				"id" => 2
 			);
 			$data['clientList'] = $this->general_model->get_basic_search($arrParam);
-			$data['equipmentList'] = $this->general_model->get_vehicles_to_rent($arrParam);
-
+			$data['equipmentList'] = $this->general_model->get_vehicles_to_rent();
 			$arrParam = array(
 				"table" => "param_vehicle_type_2",
 				"order" => "type_2",
@@ -62,7 +56,6 @@ class Dashboard extends CI_Controller {
 				"id" => 1
 			);
 			$data['equipmentType'] = $this->general_model->get_basic_search($arrParam);
-
 			$arrParam = array(
 				"table" => "rme_param",
 				"order" => "param_value",
@@ -71,6 +64,7 @@ class Dashboard extends CI_Controller {
 			);
 			$data['currentFuelList'] = $this->general_model->get_basic_search($arrParam);
 			$data['contractType'] = $this->dashboard_model->get_type_contract();
+			$data['usersList'] = $this->dashboard_model->get_list_users();
 			
 			$this->load->view("rent_modal", $data);
     }
@@ -85,13 +79,16 @@ class Dashboard extends CI_Controller {
 		header('Content-Type: application/json');
 		$data = array();
 		$idRent = $this->input->post('hddId');
-		$msj = "Se adicionó con exito el nuevo registro!";
+		$msj = "The new record was added successfully!";
 		if ($idRent != 'x') {
-			$msj = "Se actualizó con exito el registro!";
+			$msj = "The registry was updated successfully!";
 		}
 		if ($idRentNew = $this->dashboard_model->saveRent()) {
 			if ($idRent != 'x' && $this->input->post('clean') == 2) {
-				$this->send_email($idRentNew);
+				//$this->send_email($idRentNew);
+			}
+			if ($idRent == 'x') {
+				//$this->sendSMSResponsible($idRentNew);
 			}
 			$data["result"] = true;
 			$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
@@ -162,7 +159,6 @@ class Dashboard extends CI_Controller {
 		$data['pageHeaderTitle'] = "Details";
 		$data['info'] = $this->general_model->get_rents($arrParam);
 		$data['status'] = $this->dashboard_model->get_status();
-
 		$arrParamPhoto = array(
 			"table" => "rme_param",
 			"order" => "param_value",
@@ -180,6 +176,7 @@ class Dashboard extends CI_Controller {
 		$data['rentStatus'] = $this->dashboard_model->get_rent_status($arrParam);
 		$data['rentPhotos'] = $this->general_model->get_photos_rent($arrParam);
 		$data['rentAttachement'] = $this->general_model->get_attachements_rent($arrParam);
+		//pr($data['info']); exit;
 
 		$data["view"] = 'form_details';
 		$this->load->view("layout", $data);
@@ -202,10 +199,54 @@ class Dashboard extends CI_Controller {
 			'observation' => $this->input->post('information'),
 			'fk_id_status' => $this->input->post('status')
 		);
-		$msj = "Se actualizó con exito el registro!";
+		$msj = "The registry was updated successfully!";
 		if ($this->dashboard_model->saveRentStatus($arrParam)) {
 			$data["result"] = true;		
 			$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
+		} else {
+			$data["result"] = "error";
+			$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
+		}
+		echo json_encode($data);
+    }
+
+    /**
+     * Current condition modal 
+     * @since 15/05/2022
+     */
+    public function cargarModalCondition()
+	{
+			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
+			
+			$idRent = $this->input->post("idRent");
+			$arrParam = array(
+				"idRent" => $idRent
+			);
+			$data['info'] = $this->general_model->get_rents($arrParam);
+			$arrParam = array(
+				"table" => "rme_param",
+				"order" => "param_value",
+				"column" => "param_code",
+				"id" => ID_PARAM_CURRENT_FUEL
+			);
+			$data['currentFuelList'] = $this->general_model->get_basic_search($arrParam);
+
+			$this->load->view("condition_modal", $data);
+    }
+
+    /**
+	 * Update condition rent
+     * @since 15/05/2022
+     * @author BMOTTAG
+	 */
+	public function update_currentCondition()
+	{			
+		header('Content-Type: application/json');
+		$data = array();
+		$msj = "The registry was updated successfully!";
+		if ($this->dashboard_model->saveCurrentCondition()) {
+			$data["result"] = true;		
+			$this->session->set_flashdata('retornoExito', '<strong>Right!</strong> ' . $msj);
 		} else {
 			$data["result"] = "error";
 			$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
@@ -339,8 +380,7 @@ class Dashboard extends CI_Controller {
 		
 		$subjet = "Rentme All - Cleaning Machine";
 		$user = $info[0]['param_client_contact'];
-		//$to = $info[0]['param_client_email'];
-		$to = 'andres.cubillos100@gmail.com';
+		$to = $info[0]['param_client_email'];
 		$fecha = $info[0]['next_cleaning_date'];
 		$equipment = $info[0]['unit_number'] .' -----> '. $info[0]['description'] ;
 		$client = $info[0]['param_client_name'];
@@ -371,5 +411,49 @@ class Dashboard extends CI_Controller {
 		mail($to, $subjet, $mensaje, $cabeceras);
 		return true;
     }
+
+    /**
+	 * Send SMS to responsible
+     * @since 14/05/2022
+     * @author BMOTTAG
+	 */
+	public function sendSMSResponsible($idRent)
+	{			
+		$this->load->library('encrypt');
+		require 'vendor/Twilio/autoload.php';
+
+		//busco datos parametricos twilio
+		$arrParam = array(
+			"table" => "parametric",
+			"order" => "id_parametric",
+			"id" => "x"
+		);
+		$parametric = $this->general_model->get_basic_search($arrParam);						
+		$dato1 = $this->encrypt->decode($parametric[3]["value"]);
+		$dato2 = $this->encrypt->decode($parametric[4]["value"]);
+		$phone = $parametric[5]["value"];
+		
+        $client = new Twilio\Rest\Client($dato1, $dato2);														
+		$arrParam = array('idRent' => $idRent);
+		$information = $this->general_model->get_rents($arrParam); //search the last 5 records
+
+		$mensaje = "";
+		$mensaje .= "RentMe All - New Rent";
+		$mensaje .= "\n" . $information[0]['first_name'] ." ". $information[0]['last_name'];
+		$mensaje .= "\nThere is a new rent, please check the equipment and fill the current equipment condition information on the system.";
+		$mensaje .= "\nEquipment: ". $information[0]['unit_number'] ."----->". $information[0]['description'] .".";
+		$mensaje .= "\nType: ". $information[0]['type_2'] .".";
+		$mensaje .= "\nRent No. ". $information[0]['id_rent'];
+
+		$to = '+57' . $information[0]['movil'];	
+		$client->messages->create(
+			$to,
+			array(
+				'from' => $phone,
+				'body' => $mensaje
+			)
+		);
+		return true;
+	}
 
 }

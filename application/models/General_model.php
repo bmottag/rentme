@@ -273,6 +273,7 @@ class General_model extends CI_Model {
 		$this->db->join('rme_param_status S', 'S.id_status = R.fk_id_status', 'INNER');
 		$this->db->join('rme_param_type_contract T', 'T.id_type_contract = R.fk_id_type_contract', 'INNER');
 		$this->db->join('rme_param P', 'P.param_value = R.fk_id_fuel AND P.param_code = '. ID_PARAM_CURRENT_FUEL, 'LEFT');
+		$this->db->join('user U', 'U.id_user = R.fk_id_user', 'INNER');
 
 		if (array_key_exists("idRent", $arrData)) {
 			$this->db->where('id_rent', $arrData["idRent"]);
