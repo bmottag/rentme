@@ -10,6 +10,7 @@
 <div class="modal-body">
 	<form name="form" id="form" role="form" method="post">
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $info[0]["id_rent"]; ?>'/>
+		<input type="hidden" id="last_message" name="last_message" value='<?php echo $info?$info[0]["last_message"]:''; ?>'/>
 		<div class="row">
 			<div class="col-sm-12">
 				<strong class="text-primary">Client: </strong><?php echo $info[0]['param_client_name']; ?>

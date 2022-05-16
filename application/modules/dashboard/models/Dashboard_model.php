@@ -290,8 +290,8 @@ class Dashboard_model extends CI_Model {
 	}
 
 	/**
-	 * Save rent
-	 * @since 2/4/2018
+	 * Save current condition
+	 * @since 15/05/2022
 	 */
 	public function saveCurrentCondition() 
 	{
@@ -318,12 +318,19 @@ class Dashboard_model extends CI_Model {
 			'next_cleaning_date' => $next_cleaning_date,
 			'damage' => $damage,
 			'damage_observation' => $damage_observation,
-			
 		);
 		
 		$this->db->where('id_rent', $idRent);
 		$query = $this->db->update('rme_rent', $data);
 		if ($query) {
+			$arrParam = array(
+				'fk_id_rent' => $idRent,
+				'fk_id_user' => $this->session->userdata("idUser"),
+				'date_issue' => date("Y-m-d H:i:s"),
+				'observation' => $this->input->post('last_message'),
+				'fk_id_status' => 6
+			);
+			$this->saveRentStatus($arrParam);
 			return $idRent;
 		} else {
 			return false;
