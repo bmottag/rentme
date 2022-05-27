@@ -60,11 +60,10 @@ class Dashboard_model extends CI_Model {
 	public function get_type_contract()
 	{
 		$contracts = array();
-		$sql = "SELECT id_type_contract, name_type_contract
-			FROM rme_param_type_contract
-			ORDER BY id_type_contract";
-		
-		$query = $this->db->query($sql);
+		$this->db->select('id_type_contract, name_type_contract');
+		$this->db->order_by('id_type_contract', 'asc');
+		$query = $this->db->get('rme_param_type_contract');
+
 		if ($query->num_rows() > 0) {
 			$i = 0;
 			foreach ($query->result() as $row) {
@@ -124,8 +123,9 @@ class Dashboard_model extends CI_Model {
 	 */
 	public function get_truck_by_id($id)
 	{
-		$sql = "SELECT oil_change, rent_status FROM param_vehicle WHERE id_vehicle = $id";
-		$query = $this->db->query($sql);
+		$this->db->select('oil_change, rent_status');
+		$this->db->where('id_vehicle', $id);
+		$query = $this->db->get('param_vehicle');
 		if ($query->num_rows() > 0) {
 			return $query->row_array();
 		} else {
@@ -139,10 +139,15 @@ class Dashboard_model extends CI_Model {
 	 */
 	public function get_rent_by_truck($id)
 	{
-		$sql = "SELECT MAX(finish_date) AS finish_date FROM rme_rent WHERE fk_id_equipment = $id";
-		$query = $this->db->query($sql);
+		$fechaActual = date("Y-m-d");
+		$this->db->select('param_client_name, start_date, finish_date');
+		$this->db->join('rme_param_client C', 'C.id_param_client = R.fk_id_client', 'INNER');
+		$this->db->where('fk_id_equipment', $id);
+		$this->db->where("finish_date > '" . $fechaActual . "'");
+		$this->db->order_by('id_rent', 'asc');
+		$query = $this->db->get('rme_rent R');
 		if ($query->num_rows() > 0) {
-			return $query->row_array();
+			return $query->result_array();
 		} else {
 			return false;
 		}
@@ -154,8 +159,9 @@ class Dashboard_model extends CI_Model {
 	 */
 	public function get_hours_contract($id)
 	{
-		$sql = "SELECT hours_type_contract FROM rme_param_type_contract WHERE id_type_contract = $id";
-		$query = $this->db->query($sql);
+		$this->db->select('hours_type_contract');
+		$this->db->where('id_type_contract', $id);
+		$query = $this->db->get('rme_param_type_contract');
 		if ($query->num_rows() > 0) {
 			return $query->row_array();
 		} else {

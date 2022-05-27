@@ -12,8 +12,8 @@
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $info[0]["id_rent"]; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $info?$info[0]["last_message"]:''; ?>'/>
 		<div class="row">
-			<div class="col-sm-12">
-				<strong class="text-primary">Client: </strong><?php echo $info[0]['param_client_name']; ?>
+			<div class="col-sm-12 text-primary">
+				<strong>Client: </strong><?php echo $info[0]['param_client_name']; ?>
 			</div>
 		</div>
 		<div class="row">
@@ -24,6 +24,11 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<strong>Equipment: </strong><?php echo $info[0]['unit_number'] ?>---><?php echo $info[0]['description'] ?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<strong>From: </strong><?php echo $info[0]['start_date']; ?> <strong>Until: </strong><?php echo $info[0]['finish_date']; ?>
 			</div>
 		</div><br>
 		<p class="text-danger"><small><i class="icon fa fa-exclamation-triangle"></i> Fields with * are required.</small></p>

@@ -17,6 +17,7 @@ class Dashboard extends CI_Controller {
 			$arrParam["limit"] = 30; //Limite de registros para la consulta
 			$data['info'] = $this->general_model->get_rents($arrParam); //search the last 5 records
 			$data['pageHeaderTitle'] = "Dashboard";
+			$data['fechaActual'] = date("Y-m-d");
 			//pr($data['info']);exit;
 			$data["view"] = "dashboard";
 			$this->load->view("layout", $data);
@@ -295,10 +296,13 @@ class Dashboard extends CI_Controller {
 		$rentVehicle = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
 
 		if ($rentVehicle['rent_status'] == 1) {
-			$fecha = $this->dashboard_model->get_rent_by_truck($this->input->post('truck'));
+			$fechas = $this->dashboard_model->get_rent_by_truck($this->input->post('truck'));
 			$data["result"] = true;
 			$data["bandera"] = true;
-			$data["msj"] = "This equipment has a scheduled rental date. This equipment is available after <b>" . $fecha['finish_date'] . "</b>.";
+			$data["msj"] = "This equipment has scheduled rental dates.";
+				foreach ($fechas as $lista):
+			$data["msj"] .= "<br>From: <b>" . $lista['start_date'] . "</b>. Until: <b>" . $lista['finish_date'] . "</b>. Client: <b>" . $lista['param_client_name'] . "</b>.";
+				endforeach;
 		} else {
 			$data["result"] = true;
 			$data["bandera"] = false;
@@ -367,7 +371,7 @@ class Dashboard extends CI_Controller {
     }
 
     /**
-	 * Send Email
+	 * Send email
      * @since 9/5/2022
      * @author BMOTTAG
 	 */
@@ -382,7 +386,7 @@ class Dashboard extends CI_Controller {
 		$user = $info[0]['param_client_contact'];
 		$to = $info[0]['param_client_email'];
 		$fecha = $info[0]['next_cleaning_date'];
-		$equipment = $info[0]['unit_number'] .' -----> '. $info[0]['description'] ;
+		$equipment = $info[0]['unit_number'] .' -----> '. $info[0]['description'];
 		$client = $info[0]['param_client_name'];
 		$start_date = $info[0]['start_date'];
 		$finish_date = $info[0]['finish_date'];
@@ -408,7 +412,7 @@ class Dashboard extends CI_Controller {
 		$cabeceras .= 'From: RENTME ALL <info@v-contracting.ca>' . "\r\n";
 
 		//enviar correo
-		mail($to, $subjet, $mensaje, $cabeceras);
+		//mail($to, $subjet, $mensaje, $cabeceras);
 		return true;
     }
 

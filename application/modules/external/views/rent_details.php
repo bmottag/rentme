@@ -34,33 +34,30 @@
 					          	<div class="col-sm-4 invoice-col">
 					              <address>
 					                <strong>Client: </strong><?php echo $info[0]['param_client_name']; ?><br>
-<?php								
-$movil = $info[0]["param_client_movil"];
-// Separa en grupos de tres 
-$count = strlen($movil); 
-	
-$num_tlf1 = substr($movil, 0, 3); 
-$num_tlf2 = substr($movil, 3, 3); 
-$num_tlf3 = substr($movil, 6, 2); 
-$num_tlf4 = substr($movil, -2); 
+													<?php
+													$movil = $info[0]["param_client_movil"];
+													// Separa en grupos de tres 
+													$count = strlen($movil); 
+														
+													$num_tlf1 = substr($movil, 0, 3); 
+													$num_tlf2 = substr($movil, 3, 3); 
+													$num_tlf3 = substr($movil, 6, 2); 
+													$num_tlf4 = substr($movil, -2); 
 
-if($count == 10){
-	$resultado = "$num_tlf1 $num_tlf2 $num_tlf3 $num_tlf4";  
-}else{
-	
-	$resultado = chunk_split($movil,3," "); 
-}
-?>
+													if($count == 10){
+														$resultado = "$num_tlf1 $num_tlf2 $num_tlf3 $num_tlf4";  
+													}else{
+														
+														$resultado = chunk_split($movil,3," "); 
+													}
+													?>
 					                <strong>Movil Number: </strong><?php echo $resultado; ?>
 					                <br><br>
 					                <strong>Current equipment condition: </strong><?php echo $info[0]['clean']==1?"Clean":"To be clean"; ?><br>
 					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
 					                <p class="text-<?php echo $info[0]['clase']; ?>"><strong>Actual status: </strong><?php echo $info[0]['name_status']; ?></p>
-<a class="btn btn-primary" href="<?php echo base_url("external/add_client_signature/manager/" . $info[0]["id_rent"] . "/x"); ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Signature </a>				                
 					              </address>
 					            </div>
-
-
 
 					            <div class="col-sm-4 invoice-col">
 					              <address>
@@ -70,8 +67,6 @@ if($count == 10){
 					                		<strong>From: </strong><?php echo $info[0]['start_date']; ?></br>
 															<strong>Until: </strong><?php echo $info[0]['finish_date']; ?>
 													</p>
-
-
 					              </address>
 					            </div>
 					            <div class="col-sm-4 invoice-col">
@@ -83,7 +78,6 @@ if($count == 10){
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>
 					                <strong>Observations: </strong><?php echo $info[0]['observations']; ?>
-
 					              </address>
 					            </div>
 				          	</div>
@@ -93,7 +87,11 @@ if($count == 10){
 			</div>
 		</div>
 
-        <div class="row">
+    <div class="row">
+    	<?php 
+				if($rentAttachement)
+				{
+			?>
 			<section class="col-lg-6 connectedSortable">
 
 				<div class="card card-success">
@@ -112,8 +110,6 @@ if($count == 10){
 								</thead>
 								<tbody>
 							<?php 
-								if($rentAttachement)
-								{
 									$i = 0;
 									foreach ($rentAttachement as $data):
 										$i++;
@@ -131,7 +127,6 @@ if($count == 10){
 									</tr>
 							<?php
 									endforeach;
-								}
 							?>
 								</tbody>
 							</table>
@@ -139,7 +134,10 @@ if($count == 10){
 					</div>
 				</div>
 			</section>
-
+			<?php
+				}
+				if($rentPhotos){
+			?>
 			<section class="col-lg-6 connectedSortable">
 
 				<div class="card card-yellow">
@@ -147,9 +145,7 @@ if($count == 10){
 						<h3 class="card-title"><i class="ion ion-clipboard mr-1"></i> Photographic Record</h3>
 					</div>
 					<div class="card-body">
-						<?php 
-							if($rentPhotos){
-						?>
+						
 						<table class="table">
 							<thead>
 								<tr class="small">
@@ -179,15 +175,57 @@ if($count == 10){
 						?>
 							</tbody>
 						</table>
-						<?php
-							}
-						?>
+						
 					</div>
 				</div>
 
 			</section>
-
-        </div>
+			<?php
+				}
+			?>
+    </div>
+    <div class="row">
+			<section class="col-lg-6 connectedSortable">
+				<div class="card card-info">
+					<div class="card-header">
+						<h3 class="card-title"><i class="ion ion-clipboard mr-1"></i> Receive Equipment</h3>
+					</div>
+					<div class="card-body">
+						<div class="direct-chat-messages">
+							<form name="formSignature" id="formSignature" role="form" method="post" >
+								<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
+								<input type="hidden" id="hddSignature" name="hddSignature" value="<?php echo $info[0]["client_signature"]; ?>"/>
+								<div class="row">
+									<div class="col-sm-10">
+										<div class="form-group text-left">
+											<textarea id="comments" name="comments" class="form-control" rows="2" placeholder="Comments"></textarea>
+										</div>
+									</div>
+									<div class="col-sm-2">
+										<div class="form-group text-left">
+											<a class="btn btn-primary btn-sm" href="<?php echo base_url("external/add_client_signature/manager/" . $info[0]["id_rent"] . "/x"); ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Signature </a>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-10">
+										<div class="form-group text-left">
+											<input type="checkbox" id="conditions" name="conditions" class="conditions">&nbsp;
+											<label for="conditions"> By signing this form, you accept this equipment as per current conditions and contract terms.</label>
+										</div>
+									</div>
+									<div class="col-sm-2">
+										<button type="button" id="btnSave" name="btnSave" class="btn btn-primary btn-sm" >
+											Save <span class="fa fa-save" aria-hidden="true" />
+										</button> 
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
 	</div>
 </section>
   

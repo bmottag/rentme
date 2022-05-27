@@ -1,5 +1,5 @@
 $( document ).ready( function () {
-			
+
 	$( "#formState" ).validate( {
 		rules: {
 			status:			{ required: true },
@@ -18,13 +18,13 @@ $( document ).ready( function () {
 	    }
 	});
 	
-	$("#btnState").click(function(){	
+	$("#btnState").click(function(){
 		var idRent = $('#hddId').val();
 		if ($("#formState").valid() == true){
 			$('#btnState').attr('disabled','-1');
 			$.ajax({
 				type: "POST",
-				url: base_url + "dashboard/save_rent_status/" + idRent,	
+				url: base_url + "dashboard/save_rent_status/" + idRent,
 				data: $("#formState").serialize(),
 				dataType: "json",
 				contentType: "application/x-www-form-urlencoded;charset=UTF-8",
@@ -37,9 +37,9 @@ $( document ).ready( function () {
 						$("#span_msj").html(data.mensaje);
 						$("#div_msj").css("display", "inline");
 						return false;
-					} 
+					}
 					if( data.result )
-					{	                                                        
+					{
 						$("#div_cargando").css("display", "none");
 						$("#div_guardado").css("display", "inline");
 						$('#btnState').removeAttr('disabled');
@@ -61,7 +61,7 @@ $( document ).ready( function () {
 					$('#btnState').removeAttr('disabled');
 				}
 			});
-		}		
+		}
 	});
 
 	$( "#formAttachement" ).validate( {
@@ -81,13 +81,13 @@ $( document ).ready( function () {
 	    }
 	});
 	
-	$("#btnAttachement").click(function(){	
+	$("#btnAttachement").click(function(){
 		var idRent = $('#hddId').val();
 		if ($("#formAttachement").valid() == true){
 			$('#btnAttachement').attr('disabled','-1');
 			$.ajax({
 				type: "POST",
-				url: base_url + "dashboard/save_attachement",	
+				url: base_url + "dashboard/save_attachement",
 				data: $("#formAttachement").serialize(),
 				dataType: "json",
 				contentType: "application/x-www-form-urlencoded;charset=UTF-8",
@@ -124,8 +124,90 @@ $( document ).ready( function () {
 					$('#btnAttachement').removeAttr('disabled');
 				}
 			});
-		}		
+		}
 	});
 
+	$( "#formPhotos" ).validate( {
+		rules: {
+			type:			{ required: true },
+			userfile: 		{ required: true }
+		},
+		errorElement: 'span',
+	    errorPlacement: function (error, element) {
+			error.addClass('invalid-feedback');
+			element.closest('.form-group').append(error);
+	    },
+	    highlight: function (element, errorClass, validClass) {
+	    	$(element).addClass('is-invalid');
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+			$(element).removeClass('is-invalid');
+	    }
+	});
+
+
+	$( "#formSignature" ).validate( {
+		rules: {
+			comments:		{ required: true },
+			conditions:		{ required: true }
+		},
+		errorElement: 'span',
+	    errorPlacement: function (error, element) {
+			error.addClass('invalid-feedback');
+			element.closest('.form-group').append(error);
+	    },
+	    highlight: function (element, errorClass, validClass) {
+	    	$(element).addClass('is-invalid');
+	    },
+	    unhighlight: function (element, errorClass, validClass) {
+			$(element).removeClass('is-invalid');
+	    }
+	});
+	
+	$("#btnSave").click(function(){
+		var idRent = $('#hddId').val();
+		if ($("#formSignature").valid() == true){
+			$('#btnSave').attr('disabled','-1');
+			$.ajax({
+				type: "POST",
+				url: base_url + "external/save_form_signature/",
+				data: $("#formSignature").serialize(),
+				dataType: "json",
+				contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+				cache: false,
+				success: function(data){
+					if( data.result == "error" )
+					{
+						$("#div_cargando").css("display", "none");
+						$('#btnSave').removeAttr('disabled');
+						$("#span_msj").html(data.mensaje);
+						$("#div_msj").css("display", "inline");
+						return false;
+					}
+					if( data.result )
+					{
+						$("#div_cargando").css("display", "none");
+						$("#div_guardado").css("display", "inline");
+						$('#btnSave').removeAttr('disabled');
+						var url = base_url + "external/review_rent/" + idRent;
+						$(location).attr("href", url);
+					}
+					else
+					{
+						alert('Error. Reload the web page.');
+						$("#div_cargando").css("display", "none");
+						$("#div_error").css("display", "inline");
+						$('#btnSave').removeAttr('disabled');
+					}	
+				},
+				error: function(result) {
+					alert('Error. Reload the web page.');
+					$("#div_cargando").css("display", "none");
+					$("#div_error").css("display", "inline");
+					$('#btnSave').removeAttr('disabled');
+				}
+			});
+		}
+	});
 
 });

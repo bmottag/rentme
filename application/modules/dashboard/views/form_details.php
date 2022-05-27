@@ -80,7 +80,7 @@ $(function(){
 
 					                <br><br>
 					                <strong>Current equipment condition: </strong><?php if ($info[0]['clean'] == 1) { ?> Clean <?php } else if ($info[0]['clean'] == 2) { ?> To be clean <?php } else { ?> <?php } ?><br>
-					                <strong>Type of rent : </strong><?php echo $info[0]['name_type_contract']; ?>
+					                <strong>Type of rent: </strong><?php echo $info[0]['name_type_contract']; ?>
 					                <p class="text-<?php echo $info[0]['clase']; ?>"><strong>Actual status: </strong><?php echo $info[0]['name_status']; ?></p>
 					                
 													<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" id="<?php echo $info[0]["id_rent"] ?>">
@@ -105,7 +105,7 @@ $(function(){
 					              <address>
 					                <strong>Current unit hours: </strong><?php echo $info[0]['current_hours']; ?><br>
 					                <strong>Current Fuel: </strong><?php echo $info[0]['param_description']!=''?$info[0]['param_description']:''; ?><br><br>
-					                <strong>Does the unit has any damage(s)?: </strong><?php if ($info[0]['damage'] == 1) { ?> Si <?php } else if ($info[0]['damage'] == 2) { ?> No <?php } else { ?> <?php } ?><br>
+					                <strong>Does the unit has any damage?: </strong><?php if ($info[0]['damage'] == 1) { ?> Si <?php } else if ($info[0]['damage'] == 2) { ?> No <?php } else { ?> <?php } ?><br>
 					                <?php if ($info[0]['damage']==1) { ?>
 					                <strong>Damage observation: </strong><?php echo $info[0]['damage_observation']; ?><br>
 					               	<?php } ?>
@@ -216,7 +216,10 @@ $(function(){
 								</div>
 							</div>
 						</form>
-
+						<?php 
+							if($rentAttachement)
+							{
+						?>
 						<div class="direct-chat-messages">
 							<table class="table">
 								<thead>
@@ -229,8 +232,6 @@ $(function(){
 								</thead>
 								<tbody>
 							<?php 
-								if($rentAttachement)
-								{
 									$i = 0;
 									foreach ($rentAttachement as $data):
 										$i++;
@@ -251,11 +252,13 @@ $(function(){
 									</tr>
 							<?php
 									endforeach;
-								}
 							?>
 								</tbody>
 							</table>
 						</div>
+						<?php
+							}
+						?>
 					</div>
 				</div>
 			</section>
@@ -290,6 +293,10 @@ $(function(){
 								</div>
 							</div>
 						</form>
+						<?php 
+							if($rentPhotos)
+							{
+						?>
 						<hr>
 						<table class="table">
 							<thead>
@@ -301,12 +308,9 @@ $(function(){
 								</tr>
 							</thead>
 							<tbody>
-						<?php 
-							if($rentPhotos)
-							{
-								foreach ($rentPhotos as $data):
-							?>
-
+								<?php
+									foreach ($rentPhotos as $data):
+								?>
 								<tr class="small">
 									<td class='text-center'>
 									  <a href="<?php echo base_url($data['equipment_photo']); ?>" data-toggle="lightbox" data-title="<?php echo $data['type']; ?>" data-gallery="gallery">
@@ -317,12 +321,14 @@ $(function(){
 									<td><?php echo $data['name']; ?></td>
 									<td class='text-center text-muted'><?php echo $data['date']; ?></td>
 								</tr>
-						<?php
-								endforeach;
-							}
-						?>
+								<?php
+									endforeach;
+								?>
 							</tbody>
 						</table>
+						<?php
+							}
+						?>
 					</div>
 				</div>
 
