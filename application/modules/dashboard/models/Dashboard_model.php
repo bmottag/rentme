@@ -13,7 +13,6 @@ class Dashboard_model extends CI_Model {
 			FROM param_vehicle 
 			WHERE fk_id_company = $idCompany AND type_level_2 = $type AND state = 1
 			ORDER BY unit_number";
-		
 		$query = $this->db->query($sql);
 		if ($query->num_rows() > 0) {
 			$i = 0;
@@ -39,7 +38,6 @@ class Dashboard_model extends CI_Model {
 			FROM param_vehicle 
 			WHERE type_level_1 = 2 AND state = 1
 			ORDER BY unit_number";
-		
 		$query = $this->db->query($sql);
 		if ($query->num_rows() > 0) {
 			$i = 0;
@@ -63,7 +61,6 @@ class Dashboard_model extends CI_Model {
 		$this->db->select('id_type_contract, name_type_contract');
 		$this->db->order_by('id_type_contract', 'asc');
 		$query = $this->db->get('rme_param_type_contract');
-
 		if ($query->num_rows() > 0) {
 			$i = 0;
 			foreach ($query->result() as $row) {
@@ -84,7 +81,6 @@ class Dashboard_model extends CI_Model {
 	{		
 		$this->db->order_by('id_status', 'asc');
 		$query = $this->db->get('rme_param_status');
-
 		if ($query->num_rows() > 0) {
 			return $query->result_array();
 		} else {
@@ -102,14 +98,11 @@ class Dashboard_model extends CI_Model {
 		$this->db->join('rme_rent R', 'R.id_rent = RS.fk_id_rent', 'INNER');
 		$this->db->join('user U', 'RS.fk_id_user = U.id_user', 'INNER');
 		$this->db->join('rme_param_status S', 'S.id_status = RS.fk_id_status', 'INNER');
-
 		if (array_key_exists("idRent", $arrData)) {
 			$this->db->where('fk_id_rent', $arrData["idRent"]);
 		}
-				
 		$this->db->order_by('id_rent_status', 'desc');
 		$query = $this->db->get('rme_rent_status RS');
-
 		if ($query->num_rows() > 0) {
 			return $query->result_array();
 		} else {
@@ -178,7 +171,26 @@ class Dashboard_model extends CI_Model {
 		$this->db->where('state', 1);
 		$this->db->order_by('first_name','last_name', 'asc');
 		$query = $this->db->get('user');
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
+	}
 
+	/**
+	 * Rent status historical
+	 * @since 27/05/2022
+	 */
+	public function get_statusHistorical($idRent)
+	{
+		$this->db->select('H.*, T.name_type_contract, P.param_description, CONCAT(U.first_name, " ", U.last_name) name');
+		$this->db->join('rme_param_type_contract T', 'T.id_type_contract = H.fk_id_type_contract', 'INNER');
+		$this->db->join('rme_param P', 'P.param_value = H.fk_id_fuel AND P.param_code = '. ID_PARAM_CURRENT_FUEL, 'LEFT');
+		$this->db->join('user U', 'U.id_user = H.fk_id_user', 'INNER');
+		$this->db->where('fk_id_rent', $idRent);
+		$this->db->order_by('id_rent_historical', 'desc');
+		$query = $this->db->get('rme_rent_historical H');
 		if ($query->num_rows() > 0) {
 			return $query->result_array();
 		} else {
@@ -234,7 +246,20 @@ class Dashboard_model extends CI_Model {
 			'fk_id_user' => $this->input->post('responsible'),
 			'observations' => $this->input->post('observations'),
 		);
-		
+		$arrHist = array(
+			'start_date' => $this->input->post('start_date'),
+			'finish_date' => $this->input->post('finish_date'),
+			'fk_id_fuel' => $fuel,
+			'clean' => $clean,
+			'cleaning_date' => $cleaning_date,
+			'next_cleaning_date' => $next_cleaning_date,
+			'damage' => $damage,
+			'damage_observation' => $damage_observation,
+			'fk_id_type_contract' => $this->input->post('type_contract'),
+			'current_hours' => $this->input->post('current_hours'),
+			'fk_id_user' => $this->input->post('responsible'),
+			'observations' => $this->input->post('observations')
+		);
 		//revisar si es para adicionar o editar
 		if ($idRent == 'x') {
 			$data['fk_id_client'] = $this->input->post('id_client');
@@ -243,6 +268,7 @@ class Dashboard_model extends CI_Model {
 			$data['last_message'] = $this->input->post('last_message');
 			$query = $this->db->insert('rme_rent', $data);
 			$idRent = $this->db->insert_id();
+			$arrHist['fk_id_rent'] = $idRent;
 			$arrParam = array(
 				'fk_id_rent' => $idRent,
 				'fk_id_user' => $this->session->userdata("idUser"),
@@ -252,10 +278,17 @@ class Dashboard_model extends CI_Model {
 			);
 			$this->saveRentStatus($arrParam);
 			$this->saveWORent($arrParam);
+			$this->saveRentStatusHistorical($arrHist);
 			$this->updateVehicle($this->input->post('truck'));
 		} else {
-			$this->db->where('id_rent', $idRent);
-			$query = $this->db->update('rme_rent', $data);
+			if ($this->input->post('start_date') != $this->input->post('hddStartDate') || $this->input->post('finish_date') != $this->input->post('hddFinishDate') || $this->input->post('fuel') != $this->input->post('hddFuel') || $this->input->post('clean') != $this->input->post('hddClean') || $this->input->post('cleaning_date') != $this->input->post('hddCleaningDate') || $this->input->post('next_cleaning_date') != $this->input->post('hddNextCleaningDate') || $this->input->post('damage') != $this->input->post('hddDamage') || $this->input->post('damage_observation') != $this->input->post('hddDamageObservation') || $this->input->post('type_contract') != $this->input->post('hddTypeContract') || $this->input->post('current_hours') != $this->input->post('hddCurrentHours') || $this->input->post('responsible') != $this->input->post('hddResponsible') || $this->input->post('observations') != $this->input->post('hddObservations')) {
+				$this->db->where('id_rent', $idRent);
+				$query = $this->db->update('rme_rent', $data);
+				$arrHist['fk_id_rent'] = $idRent;
+				$this->saveRentStatusHistorical($arrHist);
+			} else {
+				return true;
+			}
 		}
 		if ($query) {
 			return $idRent;
@@ -296,6 +329,36 @@ class Dashboard_model extends CI_Model {
 	}
 
 	/**
+	 * Save rent status historical
+	 * @since 27/05/2022
+	 */
+	public function saveRentStatusHistorical($arrParam)
+	{
+		$data = array(
+			'fk_id_rent' => $arrParam['fk_id_rent'],
+			'start_date' => $arrParam['start_date'],
+			'finish_date' => $arrParam['finish_date'],
+			'fk_id_fuel' => $arrParam['fk_id_fuel'],
+			'clean' => $arrParam['clean'],
+			'cleaning_date' => $arrParam['cleaning_date'],
+			'next_cleaning_date' => $arrParam['next_cleaning_date'],
+			'damage' => $arrParam['damage'],
+			'damage_observation' => $arrParam['damage_observation'],
+			'fk_id_type_contract' => $arrParam['fk_id_type_contract'],
+			'current_hours' => $arrParam['current_hours'],
+			'fk_id_user' => $arrParam['fk_id_user'],
+			'observations' => $arrParam['observations'],
+			'date_issue' => date("Y-m-d H:i:s")
+		);
+		$query = $this->db->insert('rme_rent_historical', $data);
+		if ($query) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Save current condition
 	 * @since 15/05/2022
 	 */
@@ -325,7 +388,6 @@ class Dashboard_model extends CI_Model {
 			'damage' => $damage,
 			'damage_observation' => $damage_observation,
 		);
-		
 		$this->db->where('id_rent', $idRent);
 		$query = $this->db->update('rme_rent', $data);
 		if ($query) {
@@ -337,7 +399,28 @@ class Dashboard_model extends CI_Model {
 				'fk_id_status' => 6
 			);
 			$this->saveRentStatus($arrParam);
-			return $idRent;
+			$arrHist = array(
+				'fk_id_rent' => $idRent,
+				'start_date' => $this->input->post('hddStartDate'),
+				'finish_date' => $this->input->post('hddFinishDate'),
+				'fk_id_fuel' => $this->input->post('fuel'),
+				'clean' => $clean,
+				'cleaning_date' => $cleaning_date,
+				'next_cleaning_date' => $next_cleaning_date,
+				'damage' => $damage,
+				'damage_observation' => $damage_observation,
+				'fk_id_type_contract' => $this->input->post('hddTypeContract'),
+				'current_hours' => $this->input->post('hddCurrentHours'),
+				'fk_id_user' => $this->input->post('hddResponsible'),
+				'observations' => $this->input->post('hddObservations'),
+				'date_issue' => date("Y-m-d H:i:s"),
+			);
+			if ($this->input->post('fuel') != $this->input->post('hddFuel') || $this->input->post('clean') != $this->input->post('hddClean') || $this->input->post('cleaning_date') != $this->input->post('hddCleaningDate') || $this->input->post('next_cleaning_date') != $this->input->post('hddNextCleaningDate') || $this->input->post('damage') != $this->input->post('hddDamage') || $this->input->post('damage_observation') != $this->input->post('hddDamageObservation')) {
+				$this->saveRentStatusHistorical($arrHist);
+				return $idRent;
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}

@@ -159,6 +159,7 @@ class Dashboard extends CI_Controller {
 		$arrParam["idRent"] = $id;
 		$data['pageHeaderTitle'] = "Details";
 		$data['info'] = $this->general_model->get_rents($arrParam);
+		$data['rentHistorical'] = $this->dashboard_model->get_statusHistorical($id);
 		$data['status'] = $this->dashboard_model->get_status();
 		$arrParamPhoto = array(
 			"table" => "rme_param",

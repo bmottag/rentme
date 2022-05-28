@@ -14,6 +14,18 @@
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $information?$information[0]["id_rent"]:'x'; ?>'/>
 		<input type="hidden" id="hddTruck" name="hddTruck" value='<?php echo $information?$information[0]["fk_id_equipment"]:'x'; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $information?$information[0]["last_message"]:'New Rent'; ?>'/>
+		<input type="hidden" id="hddStartDate" name="hddStartDate" value='<?php echo $information?$information[0]["start_date"]:''; ?>'/>
+		<input type="hidden" id="hddFinishDate" name="hddFinishDate" value='<?php echo $information?$information[0]["finish_date"]:''; ?>'/>
+		<input type="hidden" id="hddFuel" name="hddFuel" value='<?php echo $information?$information[0]["fk_id_fuel"]:''; ?>'/>
+		<input type="hidden" id="hddClean" name="hddClean" value='<?php echo $information?$information[0]["clean"]:''; ?>'/>
+		<input type="hidden" id="hddCleaningDate" name="hddCleaningDate" value='<?php echo $information?$information[0]["cleaning_date"]:''; ?>'/>
+		<input type="hidden" id="hddNextCleaningDate" name="hddNextCleaningDate" value='<?php echo $information?$information[0]["next_cleaning_date"]:''; ?>'/>
+		<input type="hidden" id="hddDamage" name="hddDamage" value='<?php echo $information?$information[0]["damage"]:''; ?>'/>
+		<input type="hidden" id="hddDamageObservation" name="hddDamageObservation" value='<?php echo $information?$information[0]["damage_observation"]:''; ?>'/>
+		<input type="hidden" id="hddTypeContract" name="hddTypeContract" value='<?php echo $information?$information[0]["fk_id_type_contract"]:''; ?>'/>
+		<input type="hidden" id="hddCurrentHours" name="hddCurrentHours" value='<?php echo $information?$information[0]["current_hours"]:''; ?>'/>
+		<input type="hidden" id="hddResponsible" name="hddResponsible" value='<?php echo $information?$information[0]["fk_id_user"]:''; ?>'/>
+		<input type="hidden" id="hddObservations" name="hddObservations" value='<?php echo $information?$information[0]["observations"]:''; ?>'/>
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group text-left">

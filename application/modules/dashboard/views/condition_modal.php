@@ -11,6 +11,19 @@
 	<form name="form" id="form" role="form" method="post">
 		<input type="hidden" id="hddId" name="hddId" value='<?php echo $info[0]["id_rent"]; ?>'/>
 		<input type="hidden" id="last_message" name="last_message" value='<?php echo $info?$info[0]["last_message"]:''; ?>'/>
+		<input type="hidden" id="hddStartDate" name="hddStartDate" value='<?php echo $info[0]["start_date"]; ?>'/>
+		<input type="hidden" id="hddFinishDate" name="hddFinishDate" value='<?php echo $info[0]["finish_date"]; ?>'/>
+		<input type="text" id="hddFuel" name="hddFuel" value='<?php echo $info?$info[0]["fk_id_fuel"]:''; ?>'/>
+		<input type="text" id="hddClean" name="hddClean" value='<?php echo $info?$info[0]["clean"]:''; ?>'/>
+		<input type="text" id="hddCleaningDate" name="hddCleaningDate" value='<?php echo $info?$info[0]["cleaning_date"]:''; ?>'/>
+		<input type="text" id="hddNextCleaningDate" name="hddNextCleaningDate" value='<?php echo $info?$info[0]["next_cleaning_date"]:''; ?>'/>
+		<input type="text" id="hddDamage" name="hddDamage" value='<?php echo $info?$info[0]["damage"]:''; ?>'/>
+		<input type="text" id="hddDamageObservation" name="hddDamageObservation" value='<?php echo $info?$info[0]["damage_observation"]:''; ?>'/>
+		<input type="hidden" id="hddTypeContract" name="hddTypeContract" value='<?php echo $info[0]["fk_id_type_contract"]; ?>'/>
+		<input type="hidden" id="hddCurrentHours" name="hddCurrentHours" value='<?php echo $info[0]["current_hours"]; ?>'/>
+		<input type="hidden" id="hddResponsible" name="hddResponsible" value='<?php echo $info[0]["fk_id_user"]; ?>'/>
+		<input type="hidden" id="hddObservations" name="hddObservations" value='<?php echo $info[0]["observations"]; ?>'/>
+
 		<div class="row">
 			<div class="col-sm-12 text-primary">
 				<strong>Client: </strong><?php echo $info[0]['param_client_name']; ?>
