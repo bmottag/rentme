@@ -197,8 +197,8 @@ $(function(){
 					</div>
 					<div class="card-body">
 						<?php 
-							//if($rentHistorical)
-							//{
+							if($rentHistorical)
+							{
 						?>
 						<div class="direct-chat-messages">
 							<table class="table">
@@ -259,7 +259,7 @@ $(function(){
 							</table>
 						</div>
 						<?php
-							//}
+							}
 						?>
 					</div>
 				</div>
