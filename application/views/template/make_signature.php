@@ -27,6 +27,11 @@
 <body onselectstart="return false">
 	<form  name="form" id="form" method="post" >
 		<div id="signature-pad" class="m-signature-pad">
+      <div style='text-align: right'>
+        <button type="button" class="button close">
+          <a href="<?php echo base_url("external/review_rent/" . $idRent); ?>">X</a>
+        </button>
+      </div>
 			<div class="m-signature-pad--body">
 				<canvas></canvas>
 			</div>

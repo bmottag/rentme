@@ -148,7 +148,6 @@ $( document ).ready( function () {
 
 	$( "#formSignature" ).validate( {
 		rules: {
-			comments:		{ required: true },
 			conditions:		{ required: true }
 		},
 		errorElement: 'span',

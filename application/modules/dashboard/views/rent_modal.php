@@ -251,12 +251,13 @@
 
 <script>
   $(function () {
-    //Date picker
     $('#start_date').datetimepicker({
-        format: 'YYYY-MM-DD'
+        format: 'YYYY-MM-DD',
+        minDate: new Date()
     });
     $('#finish_date').datetimepicker({
-        format: 'YYYY-MM-DD'
+        format: 'YYYY-MM-DD',
+        minDate: new Date()
     });
     $('#cleaning_date').datetimepicker({
         format: 'YYYY-MM-DD'

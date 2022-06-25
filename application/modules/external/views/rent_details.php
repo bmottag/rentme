@@ -85,7 +85,7 @@
 			</div>
 		</div>
 
-		<?php if ($info[0]["client_signature"] == '' || $info[0]["comments"] == '' || $info[0]["conditions"] == 0) { ?>
+		<?php if ($info[0]["client_signature"] == '' || $info[0]["conditions"] == 0) { ?>
     <div class="row">
 			<section class="col-lg-6 connectedSortable">
 				<div class="card card-info">
@@ -93,37 +93,54 @@
 						<h3 class="card-title"><i class="ion ion-clipboard mr-1"></i> Receive Equipment</h3>
 					</div>
 					<div class="card-body">
-						<div class="direct-chat-messages">
-							<form name="formSignature" id="formSignature" role="form" method="post" >
-								<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
-								<input type="hidden" id="hddSignature" name="hddSignature" value="<?php echo $info[0]["client_signature"]; ?>"/>
-								<div class="row">
-									<div class="col-sm-10">
-										<div class="form-group text-left">
-											<textarea id="comments" name="comments" class="form-control" rows="2" placeholder="Comments"></textarea>
-										</div>
-									</div>
-									<div class="col-sm-2">
-										<div class="form-group text-left">
-											<a class="btn btn-primary btn-sm" href="<?php echo base_url("external/add_client_signature/manager/" . $info[0]["id_rent"] . "/x"); ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Signature </a>
-										</div>
+						<form name="formSignature" id="formSignature" role="form" method="post" >
+							<input type="hidden" id="hddId" name="hddId" value="<?php echo $info[0]["id_rent"]; ?>"/>
+							<input type="hidden" id="hddSignature" name="hddSignature" value="<?php echo $info[0]["client_signature"]; ?>"/>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group text-left">
+										<h5><label>By signing this form, you accept this equipment as per current conditions and contract terms.</label></h5>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm-10">
-										<div class="form-group text-left">
-											<input type="checkbox" id="conditions" name="conditions" class="conditions">&nbsp;
-											<label for="conditions"> By signing this form, you accept this equipment as per current conditions and contract terms.</label>
-										</div>
-									</div>
-									<div class="col-sm-2">
-										<button type="button" id="btnSave" name="btnSave" class="btn btn-primary btn-sm">
-											Save <span class="fa fa-save" aria-hidden="true" />
-										</button> 
+							</div>
+							<div class="row">
+								<div class="col-sm-2">
+									<div class="form-group text-left">
+										<a class="btn btn-primary btn-sm" href="<?php echo base_url("external/add_client_signature/manager/" . $info[0]["id_rent"] . "/x"); ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Signature </a>
 									</div>
 								</div>
-							</form>
-						</div>
+								<?php if (!empty($info[0]['client_signature'])) { ?>
+								<div class="col-sm-4">
+									<a href="<?php echo base_url($info[0]['client_signature']); ?>" data-toggle="lightbox" data-title="Client Signature" data-gallery="gallery">
+								    <img src="<?php echo base_url($info[0]['client_signature']); ?>" class="img-rounded" alt="Client Signature" width="250" height="150"/>
+								  </a>
+								</div>
+								<?php } ?>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group text-left">
+										<textarea id="comments" name="comments" class="form-control" rows="3" placeholder="Comments"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group text-left">
+										<input type="checkbox" id="conditions" name="conditions" class="conditions" <?php if(!empty($info[0]['client_signature'])) { ?> checked <?php } ?>>&nbsp;
+										<label for="conditions"> I accept this equipment as per current conditions and contract terms.</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-5"></div>
+								<div class="col-sm-2">
+									<button type="button" id="btnSave" name="btnSave" class="btn btn-primary btn-sm">
+										Save <span class="fa fa-save" aria-hidden="true" />
+									</button> 
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</section>
@@ -208,7 +225,7 @@
 								<tr class="small">
 									<td class='text-center'>
 									  <a href="<?php echo base_url($data['equipment_photo']); ?>" data-toggle="lightbox" data-title="<?php echo $data['type']; ?>" data-gallery="gallery">
-									    		<img src="<?php echo base_url($data['equipment_photo']); ?>" class="img-rounded" alt="Equipment Photo" width="60" height="60"/>
+									    <img src="<?php echo base_url($data['equipment_photo']); ?>" class="img-rounded" alt="Equipment Photo" width="60" height="60"/>
 									  </a>
 									</td>
 									<td><?php echo $data['type']; ?></td>

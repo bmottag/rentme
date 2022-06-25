@@ -74,6 +74,7 @@ class External extends CI_Controller {
 		$data['info'] = $this->general_model->get_rents($arrParam);
 		$data['rentPhotos'] = $this->general_model->get_photos_rent($arrParam);
 		$data['rentAttachement'] = $this->general_model->get_attachements_rent($arrParam);
+		//pr($data['info']); exit;
 		$data["view"] = 'rent_details';
 		$this->load->view("layout", $data);
 	}
@@ -117,18 +118,19 @@ class External extends CI_Controller {
 				//$this->session->set_flashdata('retornoExito', 'You just save your signature!!!');
 				
 				$data['clase'] = "alert-success";
-				$data['msj'] = $msj;	
+				$data['msj'] = $msj;
+				redirect(base_url("external/review_rent/" . $idRent));
 			} else {
 				//$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
 				
 				$data['clase'] = "alert-danger";
 				$data['msj'] = "Ask for help.";
 			}
-			
 			$data["view"] = 'template/answer';
 			$this->load->view("layout", $data);
-		}else{			
-			$this->load->view('template/make_signature');
+		} else {
+			$data["idRent"] = $idRent;
+			$this->load->view('template/make_signature', $data);
 		}
 	}
 
@@ -241,7 +243,7 @@ class External extends CI_Controller {
 					//$this->session->set_flashdata('retornoExito', 'You just save your signature!!!');
 					
 					$data['clase'] = "alert-success";
-					$data['msj'] = "Good job, you have save your signature.";	
+					$data['msj'] = "Good job, you have save your signature.";
 				} else {
 					//$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
 					
