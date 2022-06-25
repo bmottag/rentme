@@ -135,6 +135,7 @@ class External extends CI_Controller {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Form task control
      * @since 7/4/2020
      * @author BMOTTAG
@@ -511,6 +512,8 @@ class External extends CI_Controller {
     }
 	
 	/**
+=======
+>>>>>>> 0002f3fcfbbb0409934dabef4685948491c56034
 	 * Send email client
      * @since 23/05/2022
      * @author BMOTTAG
@@ -546,7 +549,7 @@ class External extends CI_Controller {
 		$start_date = $info[0]['start_date'];
 		$finish_date = $info[0]['finish_date'];
 		if ($info[0]['damage'] == 1) {
-			$damage = 'Si';
+			$damage = 'Yes';
 			$damage_observation = $info[0]['damage_observation'];
 		} else if ($info[0]['damage'] == 2) {
 			$damage = 'No';
