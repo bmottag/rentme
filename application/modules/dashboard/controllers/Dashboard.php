@@ -295,18 +295,18 @@ class Dashboard extends CI_Controller {
 		header('Content-Type: application/json');
 		$data = array();
 		$rentVehicle = $this->dashboard_model->get_truck_by_id($this->input->post('truck'));
-
+		$data["result"] = true;
+		$data["bandera"] = false;
 		if ($rentVehicle['rent_status'] == 1) {
 			$fechas = $this->dashboard_model->get_rent_by_truck($this->input->post('truck'));
-			$data["result"] = true;
-			$data["bandera"] = true;
-			$data["msj"] = "This equipment has scheduled rental dates.";
-				foreach ($fechas as $lista):
-			$data["msj"] .= "<br>From: <b>" . $lista['start_date'] . "</b>. Until: <b>" . $lista['finish_date'] . "</b>. Client: <b>" . $lista['param_client_name'] . "</b>.";
-				endforeach;
-		} else {
-			$data["result"] = true;
-			$data["bandera"] = false;
+			if($fechas){
+				$data["bandera"] = true;
+				$data["msj"] = "This equipment has scheduled rental dates.";
+
+					foreach ($fechas as $lista):
+						$data["msj"] .= "<br>From: <b>" . $lista['start_date'] . "</b>. Until: <b>" . $lista['finish_date'] . "</b>. Client: <b>" . $lista['param_client_name'] . "</b>.";
+					endforeach;
+			}
 		}
 		echo json_encode($data);
     }
